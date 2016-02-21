@@ -6,7 +6,7 @@
 #    By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/09/25 17:44:49 by qle-guen          #+#    #+#              #
-#    Updated: 2016/02/21 21:03:18 by qle-guen         ###   ########.fr        #
+#    Updated: 2016/02/21 21:39:34 by qle-guen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ BINDIR		=	test
 SRCDIR		=	src
 BUILDDIR	=	build
 LIBDIR		=	.
-INCLUDE		=	.
+INCLUDE		=	libft/include
 NAME		=	gnl-test
 TARGET		=	$(BINDIR)/$(NAME)
 
