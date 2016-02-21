@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 21:06:49 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/02/21 21:46:20 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/02/21 22:15:52 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <stdlib.h>
 #include <libft.h>
+#include <fcntl.h>
 
 #define BUFF_SIZE		100
 #define READ_LIST		stat->read
@@ -25,6 +26,7 @@
 typedef struct	s_status
 {
 	t_list		*read;
+	size_t		slen;
 }				t_status;
 
 typedef struct	s_read

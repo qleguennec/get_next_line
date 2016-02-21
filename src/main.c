@@ -6,12 +6,11 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 21:06:02 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/02/21 21:46:59 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/02/21 21:50:25 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <fcntl.h>
 
 int			main
 	(int argc, char **argv)
