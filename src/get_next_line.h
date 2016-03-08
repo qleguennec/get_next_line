@@ -6,18 +6,20 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 21:06:49 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/02/21 22:15:52 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/03/04 18:22:54 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
+#include "libft.h"
 #include <stdlib.h>
-#include <libft.h>
+#include <stdio.h>
 #include <fcntl.h>
+#include <unistd.h>
 
-#define BUFF_SIZE		100
+#define BUFF_SIZE		10
 #define READ_LIST		stat->read
 #define LAST_READ		((t_read *)stat->read->content)->str
 #define LAST_READ_LEN	((t_read *)stat->read->content)->slen
@@ -26,6 +28,7 @@
 typedef struct	s_status
 {
 	t_list		*read;
+	char		*line_end;
 	size_t		slen;
 }				t_status;
 
@@ -33,7 +36,7 @@ typedef struct	s_read
 {
 	char		str[BUFF_SIZE];
 	size_t		slen;
-	size_t		r_return;
+	int			r_return;
 }				t_read;
 
 static t_status	*stat = NULL;

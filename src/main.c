@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 21:06:02 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/02/21 21:50:25 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/03/04 18:16:13 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,25 @@ int			main
 	char	*line;
 
 	i = 1;
+	line = NULL;
+	if (argc == 1)
+	{
+		ft_putendl("usage: gnl-test file");
+		return (1);
+	}
 	while (i < (size_t)argc)
 	{
-		fd = open(argv[i], 0, O_RDONLY);
-		while ((gnl_return = get_next_line(fd, &line)) >= 0)
+		fd = open(argv[i], 0, 0);
+		printf("debug\topen %s on fd %d\n", argv[i], fd);
+		while (1)
 		{
-			ft_putendl(line);
-			free(line);
+			gnl_return = get_next_line(fd, &line);
+			if (gnl_return <= 0)
+				break ;
 		}
-		if (gnl_return < 0)
-			return (- gnl_return);
+		i++;
+		if (i < (size_t)argc)
+			printf("debug\t\n");
 	}
 	return (0);
 }
