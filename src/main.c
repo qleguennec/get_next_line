@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 21:06:02 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/03/04 18:16:13 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/03/09 14:42:49 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,23 @@ int			main
 		while (1)
 		{
 			gnl_return = get_next_line(fd, &line);
+			if (line)
+			{
+				ft_putstr("debug\t");
+				ft_putendl(line);
+			}
+			else
+			{
+				ft_putstr("debug\t");
+				ft_putendl("line is set to NULL");
+			}
 			if (gnl_return <= 0)
+			{
+				ft_putstr("debug\tgnl exited with ");
+				ft_putnbr(gnl_return);
+				ft_putendl("");
 				break ;
+			}
 		}
 		i++;
 		if (i < (size_t)argc)

@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 21:05:00 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/03/04 18:23:19 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/03/09 14:46:57 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,53 +28,60 @@ int			do_read
 	return (1);
 }
 
-void		debug_line
-	(char *line, size_t len)
+static int	copy
+	(char **line)
 {
-	while (len)
+	char	*buf;
+	t_list	*l;
+
+	if (!(*line = ft_strnew(stat->slen)))
+		return (0);
+	buf = *line + stat->slen - (stat->line_end - LAST_READ);
+	ft_memcpy(buf, LAST_READ, stat->line_end - LAST_READ);
+	l = READ_LIST;
+	READ_LIST = READ_LIST->next;
+	while (READ_LIST)
 	{
-		printf("\033[0;32;40m%c\033[0m", *line);
-		line++;
-		len--;
+		buf -= LAST_READ_LEN;
+		ft_memcpy(buf, LAST_READ, LAST_READ_LEN);
+		READ_LIST = READ_LIST->next;
 	}
-	ft_putchar('|');
-	ft_putchar('\n');
-	ft_putchar('\n');
-	ft_putchar('\n');
+	READ_LIST = l;
+	return (1);
+}
+
+static int	end
+	(int ret, char **line)
+{
+	*line = NULL;
+	ft_memdel((void**)stat);
+	ft_lstdel(&READ_LIST, &ft_delete);
+	return (ret);
 }
 
 int			get_next_line
 	(int fd, char **line)
 {
-	char	*buf;
-	t_list	*l;
-
 	if (fd < 0 || fd > 255)
 		return (-1);
 	if (!(stat || !(stat = ft_memalloc(sizeof(*stat)))
 		|| (READ_LIST = ft_lstnew(NULL, sizeof(t_read)))))
 		return (-1);
 	if (!(stat->line_end = ft_memchr(LAST_READ, '\n', LAST_READ_LEN)))
-		return (do_read(fd)) ? get_next_line(fd, line) : -1;
-	debug_line(LAST_READ, LAST_READ_LEN);
-	stat->slen -= LAST_READ_LEN - (stat->line_end - LAST_READ);
-	*line = ft_strnew(stat->slen);
-	buf = *line + stat->slen - (stat->line_end - LAST_READ);
-	ft_memcpy(buf, LAST_READ, stat->line_end - LAST_READ);
-	LAST_READ_LEN -= stat->line_end - LAST_READ;
+	{
+		if (!do_read(fd))
+			return (end(-1, line));
+		if (!LAST_READ_RET)
+			return (end(0, line));
+		return (get_next_line(fd, line));
+	}
+	LAST_READ_LEN -= stat->line_end - LAST_READ + 1;
+	stat->slen -= LAST_READ_LEN + 1;
+	if (!copy(line))
+		return (-1);
+	stat->slen = LAST_READ_LEN;
 	ft_memmove(LAST_READ, stat->line_end + 1, LAST_READ_LEN);
 	ft_bzero(LAST_READ + LAST_READ_LEN, BUFF_SIZE - LAST_READ_LEN);
-	l = READ_LIST;
-	stat->slen -= stat->line_end - LAST_READ;
-	while (stat->slen)
-	{
-		READ_LIST = READ_LIST->next;
-		stat->slen -= LAST_READ_LEN;
-		ft_memcpy(*line + stat->slen, LAST_READ, LAST_READ_LEN);
-	}
-	READ_LIST = l;
-	stat->slen = LAST_READ_LEN;
 	ft_lstdel(&READ_LIST->next, &ft_delete);
-	stat->line_end = NULL;
-	return (LAST_READ_RET ? 1 : 0);
+	return (1);
 }
