@@ -30,3 +30,12 @@ for SIZE in ${SIZES[@]}; do
 		echo -e "$GREEN"OK$END
 	fi
 done
+
+echo "GET_NEXT_LINE_PATH = $(PWD)"
+cd test
+
+if [ ! -d "moulitest" ]; then
+	git clone https://github.com/yyang42/moulitest.git
+fi
+
+make -C moulitest gnl
