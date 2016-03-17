@@ -6,7 +6,7 @@
 #    By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/09/25 17:44:49 by qle-guen          #+#    #+#              #
-#*   Updated: 2016/03/17 21:09:40 by qle-guen         ###   ########.fr       *#
+#*   Updated: 2016/03/17 22:37:13 by qle-guen         ###   ########.fr       *#
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,6 +78,14 @@ fclean: clean
 
 .PHONY: re
 re: fclean all
+
+.PHONY: pull-deps
+pull-libft:
+	@rm -rf libft || true
+	@git clone http://github.com/qleguennec/libft.git
+	@mkdir libft/includes
+	@mv libft/libft.h libft/includes
+	@sed -i'' -s 's/INCLUDE.*=.*/INCLUDE=includes/' libft/Makefile
 
 test: $(TARGET)
 	@test/test.sh $(ARGS)

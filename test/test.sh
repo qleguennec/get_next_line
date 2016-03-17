@@ -13,11 +13,12 @@ WHITE="\033[0;37m"
 END="\033[0m"
 
 function buff_size {
-	sed -i'' -s "s/BUFF_SIZE*/BUFF_SIZE $1/" get_next_line.h
+	sed -i'' -s "s/define BUFF_SIZE.*/define BUFF_SIZE\t\t$1/" get_next_line.h
 }
 
 for SIZE in ${SIZES[@]}; do
 	buff_size $SIZE
+	make re > /dev/null
 	echo -en "Testing for BUFF_SIZE\t$SIZE\t"
 	MY=$(./gnl-test cat get_next_line.c)
 	CAT=$(cat get_next_line.c)
