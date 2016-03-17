@@ -50,7 +50,7 @@ fi
 echo -e "$INFO"Tesing with moulitest$END
 echo "GET_NEXT_LINE_PATH = $PWD" > test/moulitest/config.ini
 cd test
-make -C moulitest gnl > result.log 2>&1
+make -C moulitest gnl > result.log 2>&1 || cat result.log
 
 if [ $? -ne 0 ]; then
 	exit 1
