@@ -6,13 +6,13 @@
 #    By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/09/25 17:44:49 by qle-guen          #+#    #+#              #
-#    Updated: 2016/03/09 14:50:01 by qle-guen         ###   ########.fr        #
+#*   Updated: 2016/03/17 13:14:53 by qle-guen         ###   ########.fr       *#
 #                                                                              #
 # **************************************************************************** #
 
 # Directories
 BINDIR		=	test
-SRCDIR		=	src
+SRCDIR		=	.
 BUILDDIR	=	build
 LIBDIR		=	.
 INCLUDE		=	libft/include
