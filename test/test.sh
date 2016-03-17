@@ -23,7 +23,6 @@ function buff_size {
 echo -e "$INFO"Simple cat tests$END
 for SIZE in ${SIZES[@]}; do
 	buff_size $SIZE
-	cat get_next_line.h
 	make re > /dev/null
 	echo -en "Testing for BUFF_SIZE\t$SIZE\t"
 	MY=$(./gnl-test cat get_next_line.c)
@@ -63,6 +62,6 @@ if [ -z "$RESULT" ]; then
 	exit 0
 else
 	echo -e "$NOK"MOULITEST NOK$END
-	echo $RESULT
+	echo -e $RESULT
 	exit 1
 fi
