@@ -6,7 +6,7 @@
 #    By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/09/25 17:44:49 by qle-guen          #+#    #+#              #
-#*   Updated: 2016/03/18 00:15:48 by qle-guen         ###   ########.fr       *#
+#*   Updated: 2016/03/18 00:27:26 by qle-guen         ###   ########.fr       *#
 #                                                                              #
 # **************************************************************************** #
 
@@ -85,7 +85,7 @@ pull-libft:
 	@git clone http://github.com/qleguennec/libft.git
 	@mkdir libft/includes
 	@mv libft/libft.h libft/includes
-	@sed -i'' 's/INCLUDE.*=.*/INCLUDE=includes/' libft/Makefile
+	@sed -i'' -s 's/INCLUDE.*=.*/INCLUDE=includes/' libft/Makefile
 
 test: $(TARGET)
 	@test/test.sh $(ARGS)

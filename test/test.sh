@@ -17,7 +17,7 @@ NOK=$RED
 INFO=$CYAN
 
 function buff_size {
-	sed -i'' "s/define BUFF_SIZE.*/define BUFF_SIZE\t\t$1/" get_next_line.h
+	sed -i'' -s "s/define BUFF_SIZE.*/define BUFF_SIZE\t\t$1/" get_next_line.h
 }
 
 echo -e "$INFO"Simple cat tests$END
