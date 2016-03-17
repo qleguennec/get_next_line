@@ -6,7 +6,7 @@
 #    By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/09/25 17:44:49 by qle-guen          #+#    #+#              #
-#*   Updated: 2016/03/17 13:25:57 by qle-guen         ###   ########.fr       *#
+#*   Updated: 2016/03/17 21:09:40 by qle-guen         ###   ########.fr       *#
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,14 +25,14 @@ LIBFLAGS	=	-L$(BUILDDIR) $(subst lib,-l,$(LIBSRC))
 CFLAGS		=	-I$(INCLUDE) -Wall -Wextra -Werror -g
 
 # Color output
-BLACK		=	"\033[0;30;40m"
-RED			=	"\033[0;31;40m"
-GREEN		=	"\033[0;32;40m"
-YELLOW		=	"\033[1;33;40m"
-BLUE		=	"\033[0;34;40m"
-MAGENTA		=	"\033[0;35;40m"
-CYAN		=	"\033[0;36;40m"
-WHITE		=	"\033[0;37;40m"
+BLACK		=	"\033[0;30m"
+RED			=	"\033[0;31m"
+GREEN		=	"\033[0;32m"
+YELLOW		=	"\033[1;33m"
+BLUE		=	"\033[0;34m"
+MAGENTA		=	"\033[0;35m"
+CYAN		=	"\033[0;36m"
+WHITE		=	"\033[0;37m"
 END			=	"\033[0m"
 
 # Source files
