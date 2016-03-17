@@ -31,11 +31,21 @@ for SIZE in ${SIZES[@]}; do
 	fi
 done
 
-echo "GET_NEXT_LINE_PATH = $(PWD)"
+echo "GET_NEXT_LINE_PATH = $PWD" > test/config.ini
 cd test
 
 if [ ! -d "moulitest" ]; then
 	git clone https://github.com/yyang42/moulitest.git
 fi
 
-make -C moulitest gnl
+mv config.ini moulitest
+make -C moulitest gnl > result.log
+RESULT=$(cat result.log | grep ">>>>" | grep spec | grep -v "Ok !")
+if [ -z "$RESULT" ]; then
+	echo -e "$GREEN"MOULITEST OK$END
+	exit 0
+else
+	echo -e "$RED"MOULITEST NOK$END
+	echo $RESULT
+	exit 1
+fi
