@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 21:05:00 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/03/09 15:45:17 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/03/17 15:09:09 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,17 @@ static int	copy
 static int	end
 	(int ret, char **line)
 {
-	*line = NULL;
-	ft_memdel((void**)stat);
+	if (!ret && READ_LIST->next && ((t_read*)READ_LIST->next->content)->slen)
+	{
+		*line = ft_strdup((char*)READ_LIST->next->content);
+		ft_lstdel(&READ_LIST->next, &ft_delete);
+		READ_LIST->next = NULL;
+		return (1);
+	}
+	else
+		*line = NULL;
 	ft_lstdel(&READ_LIST, &ft_delete);
+	ft_memdel((void**)&stat);
 	return (ret);
 }
 
