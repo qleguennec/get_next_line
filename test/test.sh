@@ -13,7 +13,7 @@ WHITE="\033[0;37m"
 END="\033[0m"
 
 function buff_size {
-	sed -i'' -s "s/define BUFF_SIZE.*/define BUFF_SIZE\t\t$1/" get_next_line.h
+	sed -i'' -e "s/define BUFF_SIZE.*/define BUFF_SIZE\t\t$1/" get_next_line.h
 }
 
 for SIZE in ${SIZES[@]}; do
@@ -31,15 +31,20 @@ for SIZE in ${SIZES[@]}; do
 	fi
 done
 
-echo "GET_NEXT_LINE_PATH = $PWD" > test/config.ini
-cd test
-
-if [ ! -d "moulitest" ]; then
-	git clone https://github.com/yyang42/moulitest.git
+if [ ! -d "test/moulitest" ]; then
+	echo -e "$BLUE"Fetching moulitest$END
+	git clone https://github.com/yyang42/moulitest.git test/moulitest --quiet
 fi
 
-mv config.ini moulitest
-make -C moulitest gnl > result.log
+echo -e "$BLUE"Tesing with moulitest$END
+echo "GET_NEXT_LINE_PATH = $PWD" > test/moulitest/config.ini
+cd test
+make -C moulitest gnl > result.log 2>&1
+
+if [ $? -ne 0 ]; then
+	exit 1
+fi
+
 RESULT=$(cat result.log | grep ">>>>" | grep spec | grep -v "Ok !")
 if [ -z "$RESULT" ]; then
 	echo -e "$GREEN"MOULITEST OK$END
