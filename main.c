@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 21:06:02 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/03/18 19:12:03 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/03/18 22:23:36 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,16 +86,25 @@ int			main
 				gnl_return = get_next_line(fd, &line);
 				if (gnl_return <= 0)
 					break ;
-				ft_putendl(line);
+				else
+					ft_putendl(line);
+				free(line);
 			}
 			i++;
 		}
 		while (1)
 			;
 	}
+	else if (ft_strequ(argv[1], "silent"))
+	{
+		fd = open(argv[i], 0, 0);
+		while (get_next_line(fd, &line) > 0)
+			free(line);
+		free(line);
+	}
 	else
 	{
-		ft_putendl("function can be either <cat> or <debug>");
+		ft_putendl("function can be either <cat> or <debug> or <silent> or <cat-leaks>");
 		return (2);
 	}
 	return (0);

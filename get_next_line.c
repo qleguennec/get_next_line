@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 21:05:00 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/03/18 20:56:26 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/03/18 22:21:07 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	do_read
 {
 	t_list	*l;
 
-	if (!(l = ft_lstnew(ft_memalloc(sizeof(t_read*)), sizeof(t_read))))
+	if (!(l = ft_lstnew(NULL, sizeof(t_read))))
 		return (0);
 	ft_lstadd(&READ_LIST, l);
 	LAST_READ_RET = read(fd, LAST_READ, BUFF_SIZE);
