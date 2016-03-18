@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 21:05:00 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/03/18 00:00:22 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/03/18 17:07:49 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ static int	end
 		*line = ft_strdup((char*)READ_LIST->next->content);
 		ft_lstdel(&READ_LIST->next, &ft_delete);
 		READ_LIST->next = NULL;
+		stat->slen = 0;
 		return (1);
 	}
 	else
