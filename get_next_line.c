@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 21:05:00 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/03/18 22:21:07 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/03/19 00:21:59 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static int	end
 int			get_next_line
 	(int fd, char **line)
 {
-	if (!line || fd < 0 || fd > 255)
+	if (BUFF_SIZE <= 0 || !line || fd < 0 || fd > 255)
 		return (-1);
 	if (!(stat[fd] || !(stat[fd] = ft_memalloc(sizeof(*stat[fd])))
 		|| (READ_LIST = ft_lstnew(NULL, sizeof(t_read)))))
