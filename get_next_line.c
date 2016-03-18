@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 21:05:00 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/03/18 17:42:31 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/03/18 19:13:32 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,7 @@ static int	end
 		stat[fd]->slen = 0;
 		return (1);
 	}
-	else
-		*line = NULL;
+	*line = NULL;
 	ft_lstdel(&READ_LIST, &ft_delete);
 	ft_memdel((void**)&stat[fd]);
 	return (ret);
@@ -76,7 +75,7 @@ int			get_next_line
 	if (!(stat[fd] || !(stat[fd] = ft_memalloc(sizeof(*stat[fd])))
 		|| (READ_LIST = ft_lstnew(NULL, sizeof(t_read)))))
 		return (-1);
-	if (!(stat[fd]->line_end = ft_memchr(LAST_READ, '\n', LAST_READ_LEN)))
+	if (!(stat[fd]->line_end = ft_memchr(LAST_READ, SEP_CHAR, LAST_READ_LEN)))
 	{
 		if (!do_read(fd))
 			return (end(fd, line, -1));

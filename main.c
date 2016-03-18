@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 21:06:02 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/03/17 14:06:47 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/03/18 19:12:03 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int			main
 				if (line)
 				{
 					ft_putstr("debug\t");
+					ft_putnbr(gnl_return);
+					ft_putchar('\t');
 					ft_putendl(line);
 				}
 				else
