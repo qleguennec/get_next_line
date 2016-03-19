@@ -53,24 +53,19 @@ $(BUILDDIR):
 
 $(LIBDIR)/$(LIBSRC):
 	@git clone http://github.com/qleguennec/$(@F).git $@
-	@cp $@/$(shell make -C $@ include)/$(@F).h $(INCLUDE) > /dev/null 2>&1 || true
+	@cp $@/includes/$(@F).h $(INCLUDE) 2> /dev/null || true
 
 .PHONY: clean
 clean:
-	@rm -f $(LIBS)
-	@echo $(RED)--- lib: $(CYAN)$(LIBS:$(BUILDDIR)/%=%)$(END)
-	@rm -f $(OBJECTS)
-	@echo $(RED)--- obj: $(YELLOW)$(OBJECTS:$(BUILDDIR)/%=%)$(END)
-	@rm -rf $(BUILDDIR) > /dev/null 2>&1 || true
+	@rm $(LIBS) 2> /dev/null && echo $(RED)--- lib: $(CYAN)$(LIBS:$(BUILDDIR)/%=%)$(END); true
+	@rm $(OBJECTS) 2> /dev/null && echo $(RED)--- obj: $(YELLOW)$(OBJECTS:$(BUILDDIR)/%=%)$(END); true
 
 .PHONY:	fclean
 fclean: clean
-	@rm -f $(TARGET)
-	@echo $(RED)--- bin: $(BLUE)$(NAME)$(END)
+	@rm $(TARGET) 2> /dev/null && echo $(RED)--- bin: $(BLUE)$(NAME)$(END); true
 
 .PHONY: re
 re: fclean all
-
 
 .PHONY: test
 test:
