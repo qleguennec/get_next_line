@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2015/09/25 17:44:49 by qle-guen          #+#    #+#              #
-#*   Updated: 2016/03/18 00:37:43 by qle-guen         ###   ########.fr       *#
-#                                                                              #
-# **************************************************************************** #
-
 # Directories
 BINDIR		=	.
 SRCDIR		=	.
@@ -51,8 +39,8 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.c $(BUILDDIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo $(GREEN)+++ obj: $(YELLOW)$(@F)$(END)
 
-$(BUILDDIR)/%.a: $(LIBDIR)/% $(BUILDDIR)
-	@make -s -C $<
+$(BUILDDIR)/%.a: $(LIBDIR)/% $(BUILDDIR) $(LIBDIR)/$(LIBSRC)
+	@make -s -C $< > /dev/null
 	@cp $</$(@F) $@
 	@echo $(GREEN)+++ lib: $(CYAN)$(@F)$(END)
 
@@ -61,7 +49,11 @@ $(TARGET): $(LIBS) $(OBJECTS)
 	@echo $(GREEN)+++ bin: $(BLUE)$(NAME)$(END)
 
 $(BUILDDIR):
-	@mkdir build/
+	@mkdir $(BUILDDIR)
+
+$(LIBDIR)/$(LIBSRC):
+	@git clone http://github.com/qleguennec/$(@F).git $@
+	@cp $@/$(shell make -C $@ include)/$(@F).h $(INCLUDE) > /dev/null 2>&1 || true
 
 .PHONY: clean
 clean:
@@ -69,7 +61,7 @@ clean:
 	@echo $(RED)--- lib: $(CYAN)$(LIBS:$(BUILDDIR)/%=%)$(END)
 	@rm -f $(OBJECTS)
 	@echo $(RED)--- obj: $(YELLOW)$(OBJECTS:$(BUILDDIR)/%=%)$(END)
-	@rm -rf build/
+	@rm -rf $(BUILDDIR) > /dev/null 2>&1 || true
 
 .PHONY:	fclean
 fclean: clean
@@ -79,13 +71,6 @@ fclean: clean
 .PHONY: re
 re: fclean all
 
-.PHONY: pull-libft
-pull-libft:
-	@rm -rf libft || true
-	@git clone http://github.com/qleguennec/libft.git
-	@mkdir libft/includes
-	@mv libft/libft.h libft/includes
-	@sed -i'' -s 's/INCLUDE.*=.*/INCLUDE=includes/' libft/Makefile
 
 .PHONY: test
 test:
