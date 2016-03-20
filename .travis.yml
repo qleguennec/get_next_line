@@ -7,4 +7,5 @@ language: c
 compiler: clang
 
 script:
+    - ./test/functions-used.sh
     - make test
