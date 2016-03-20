@@ -69,4 +69,5 @@ re: fclean all
 
 .PHONY: test
 test:
+	@test/functions-used.sh
 	@test/test.sh $(ARGS)
