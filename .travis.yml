@@ -6,6 +6,8 @@ language: c
 
 compiler: clang
 
+install:
+    - make re
+
 script:
-    - ./test/functions-used.sh
     - make test

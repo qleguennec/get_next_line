@@ -19,7 +19,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#define BUFF_SIZE 10000
+#define BUFF_SIZE 1
 #define SEP_CHAR		'\n'
 #define READ_LIST		stat[fd]->read
 #define LAST_READ		((t_read *)stat[fd]->read->content)->str
