@@ -14,7 +14,7 @@ OK=$GREEN
 NOK=$RED
 INFO=$CYAN
 
-echo $BLUE"Displaying functions used"$END
+echo -e $BLUE"Displaying functions used"$END
 make re
 BUILDDIR=$(make -s get-BUILDDIR)
 
