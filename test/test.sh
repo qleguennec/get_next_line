@@ -22,6 +22,7 @@ function buff_size {
 
 OLDDIR=$PWD
 make rendu
+cp test/main.c /tmp/get_next_line
 cd /tmp/get_next_line
 
 echo -e "$INFO"Simple cat tests$END
@@ -29,7 +30,7 @@ for SIZE in ${SIZES[@]}; do
 	buff_size $SIZE
 	make -C libft/ fclean > /dev/null && make -C libft > /dev/null
 	clang -Wall -Wextra -Werror -I libft/includes -o get_next_line.o -c get_next_line.c
-	clang -Wall -Wextra -Werror -I libft/includes -o main.o -c $OLDDIR/main.c
+	clang -Wall -Wextra -Werror -I libft/includes -o main.o -c main.c
 	clang -o gnl-test main.o get_next_line.o -I libft/includes -L libft/ -lft
 	echo -en "Testing for BUFF_SIZE\t$SIZE\t"
 	MY=$(./gnl-test cat get_next_line.c)
@@ -45,7 +46,6 @@ done
 
 cd $OLDDIR
 make rendu
-cd /tmp/get_next_line
 
 if [ ! -d "test/moulitest" ]; then
 	echo -ne "$INFO""Fetching moulitest "$END

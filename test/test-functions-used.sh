@@ -14,7 +14,9 @@ OK=$GREEN
 NOK=$RED
 INFO=$CYAN
 
-BUILDDIR=$(cat Makefile | grep BUILDDIR | head -n1 | awk '{print $NF}')
+echo $BLUE"Displaying functions used"$END
+make re
+BUILDDIR=$(make -s get-BUILDDIR)
 
 function show {
 	echo "Functions used in $1:"

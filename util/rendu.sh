@@ -10,6 +10,9 @@ RENDU_URL=$1
 echo NAME: $PROJECT_NAME
 echo DIR: $PROJECT_DIR
 
+make fclean
+OLDDIR=$PWD
+
 if [ -n "$RENDU_URL" ]; then
 	git clone $42_URL /tmp
 else
@@ -19,13 +22,14 @@ else
 	mkdir $PROJECT_DIR
 fi
 
-CPY=(get_next_line.* Makefile main.c auteur)
+CPY=(src/get_next_line.c includes/get_next_line.h Makefile test/main.c auteur)
 
 for DIR in ${CPY[@]}; do
 	cp -r $DIR $PROJECT_DIR
 done
 
-make -C $PROJECT_DIR all fclean
+LIBDIR=. make -C $PROJECT_DIR deps
+sed -i'' -s 's/<get_next_line.h>/"get_next_line.h"/g' $PROJECT_DIR/get_next_line.c
 
 RM=(Makefile main.c)
 

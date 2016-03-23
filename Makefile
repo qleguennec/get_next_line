@@ -1,16 +1,17 @@
 # Directories
-BINDIR		=	.
-SRCDIR		=	.
-BUILDDIR	=	build
-LIBDIR		=	.
-INCLUDE		=	libft/includes
-NAME		=	gnl-test
+BINDIR		?=	.
+SRCDIR		=	src
+BUILDDIR	?=	build
+LIBDIR		?=	lib
+INCLUDE		+=	includes
+INCLUDE		+=	$(LIBDIR)/$(LIBSRC)/includes
+NAME		=	libgnl.a
 TARGET		=	$(BINDIR)/$(NAME)
 
 # Compiler options
 CC			=	clang
 LIBFLAGS	=	-L$(BUILDDIR) $(subst lib,-l,$(LIBSRC))
-CFLAGS		=	-I$(INCLUDE) -Wall -Wextra -Werror -g
+CFLAGS		=	$(addprefix -I,$(INCLUDE)) -Wall -Wextra -Werror -g
 
 # Color output
 BLACK		=	"\033[0;30m"
@@ -24,7 +25,6 @@ WHITE		=	"\033[0;37m"
 END			=	"\033[0m"
 
 # Source files
-SRC			+=	main.c
 SRC			+=	get_next_line.c
 
 # Libraries
@@ -46,11 +46,14 @@ $(BUILDDIR)/%.a: $(LIBDIR)/%
 	@echo $(GREEN)+++ lib: $(CYAN)$(@F)$(END)
 
 $(TARGET): $(LIBS) $(OBJECTS)
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJECTS) $(LIBFLAGS)
+	@ar rc $(@) $(OBJECTS)
 	@echo $(GREEN)+++ bin: $(BLUE)$(NAME)$(END)
 
 $(LIBDIR)/$(LIBSRC):
 	@git clone http://github.com/qleguennec/$(@F).git $@
+
+.PHONY: deps
+deps: $(LIBDIR)/$(LIBSRC)
 
 .PHONY: clean
 clean:
@@ -67,8 +70,8 @@ re: fclean all
 
 .PHONY: test
 test:
-	@test/test-functions-used.sh
 	@test/test.sh $(ARGS)
+	@test/test-functions-used.sh
 
 .PHONY: rendu
 rendu:
