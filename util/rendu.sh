@@ -28,7 +28,8 @@ for DIR in ${CPY[@]}; do
 	cp -r $DIR $PROJECT_DIR
 done
 
-LIBDIR=. make -C $PROJECT_DIR deps
+cd $PROJECT_DIR
+make
 sed -i'' -s 's/<get_next_line.h>/"get_next_line.h"/g' $PROJECT_DIR/get_next_line.c
 
 RM=(Makefile main.c)
@@ -38,7 +39,6 @@ for DIR in ${RM[@]}; do
 done
 
 find $PROJECT_DIR -mindepth 2 -type d -name ".git" -exec rm -rf {} \; 2>/dev/null
-
 ls -la $PROJECT_DIR
 
 exit 0
