@@ -49,11 +49,9 @@ $(TARGET): $(LIBS) $(OBJECTS)
 	@ar rc $(@) $(OBJECTS)
 	@echo $(GREEN)+++ bin: $(BLUE)$(NAME)$(END)
 
-$(LIBDIR)/$(LIBSRC):
+$(LIBDIR)/%:
 	@git clone http://github.com/qleguennec/$(@F).git $@
-
-.PHONY: deps
-deps: $(LIBDIR)/$(LIBSRC)
+	@make -C $@ purge
 
 .PHONY: clean
 clean:
