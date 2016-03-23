@@ -19,13 +19,20 @@ else
 	mkdir $PROJECT_DIR
 fi
 
-CPY=(get_next_line.*)
+CPY=(get_next_line.* Makefile main.c)
 
 for DIR in ${CPY[@]}; do
 	cp -r $DIR $PROJECT_DIR
 done
 
 make -C $PROJECT_DIR all fclean
+
+RM=(Makefile main.c)
+
+for DIR in ${RM[@]}; do
+	rm $PROJECT_DIR/$DIR
+done
+
 find $PROJECT_DIR -mindepth 2 -type d -name ".git" -exec rm -rf {} \; 2>/dev/null
 
 exit 0
