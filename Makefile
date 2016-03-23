@@ -75,5 +75,9 @@ test:
 rendu:
 	@util/rendu.sh
 
+.PHONY: purge
+purge:
+	@util/purge.sh
+
 get-%:
 	@echo '$($*)'
