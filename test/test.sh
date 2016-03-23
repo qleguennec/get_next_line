@@ -36,6 +36,8 @@ for SIZE in ${SIZES[@]}; do
 	fi
 done
 
+make rendu
+
 if [ ! -d "test/moulitest" ]; then
 	echo -ne "$INFO""Fetching moulitest "$END
 	git clone https://github.com/yyang42/moulitest.git test/moulitest --quiet
@@ -48,7 +50,7 @@ if [ ! -d "test/moulitest" ]; then
 fi
 
 echo -e "$INFO"Tesing with moulitest$END
-echo "GET_NEXT_LINE_PATH = $PWD" > test/moulitest/config.ini
+echo "GET_NEXT_LINE_PATH = /tmp/get_next_line" > test/moulitest/config.ini
 cd test
 make -C moulitest gnl > result.log 2>&1 || cat result.log
 
