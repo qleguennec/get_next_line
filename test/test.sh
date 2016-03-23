@@ -22,8 +22,8 @@ function buff_size {
 
 OLDDIR=$PWD
 make rendu
-cp test/main.c /tmp/get_next_line
-cd /tmp/get_next_line
+cp test/main.c /tmp/libgnl
+cd /tmp/libgnl
 
 echo -e "$INFO"Simple cat tests$END
 for SIZE in ${SIZES[@]}; do
@@ -59,7 +59,7 @@ if [ ! -d "test/moulitest" ]; then
 fi
 
 echo -e "$INFO"Tesing with moulitest$END
-echo "GET_NEXT_LINE_PATH = /tmp/get_next_line" > test/moulitest/config.ini
+echo "GET_NEXT_LINE_PATH = /tmp/libgnl" > test/moulitest/config.ini
 cd test
 make -C moulitest gnl > result.log 2>&1 || cat result.log
 
@@ -67,7 +67,7 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
-RESULT=$(cat result.log | grep ">>>>" | grep spec | grep -v "Ok !")
+RESULT=$(cat result.log | grep ">>>>" | grep "[FAIL]")
 if [ -z "$RESULT" ]; then
 	echo -e "$OK"MOULITEST OK$END
 	exit 0

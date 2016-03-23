@@ -1,6 +1,6 @@
 # Directories
 BINDIR		?=	.
-SRCDIR		=	src
+SRCDIR		?=	src
 BUILDDIR	?=	build
 LIBDIR		?=	lib
 INCLUDE		+=	includes
@@ -28,7 +28,7 @@ END			=	"\033[0m"
 SRC			+=	get_next_line.c
 
 # Libraries
-LIBSRC		+=	libft
+LIBSRC		=	libft
 
 OBJECTS		=	$(addprefix $(BUILDDIR)/, $(SRC:%.c=%.o))
 LIBS		=	$(addprefix $(BUILDDIR)/, $(addsuffix .a,$(LIBSRC)))
@@ -61,10 +61,13 @@ clean:
 
 .PHONY:	fclean
 fclean: clean
-	@rm $(TARGET) 2> /dev/null && echo $(RED)--- bin: $(BLUE)$(NAME)$(END); true
+	@rm $(TARGET) > /dev/null && echo $(RED)--- bin: $(BLUE)$(NAME)$(END); true
 
 .PHONY: re
 re: fclean all
+
+.PHONY: deps
+deps: $(addprefix $(LIBDIR)/, $(LIBSRC))
 
 .PHONY: test
 test:

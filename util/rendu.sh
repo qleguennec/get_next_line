@@ -10,7 +10,6 @@ RENDU_URL=$1
 echo NAME: $PROJECT_NAME
 echo DIR: $PROJECT_DIR
 
-make fclean
 OLDDIR=$PWD
 
 if [ -n "$RENDU_URL" ]; then
@@ -22,23 +21,16 @@ else
 	mkdir $PROJECT_DIR
 fi
 
-CPY=(src/get_next_line.c includes/get_next_line.h Makefile test/main.c auteur)
+CPY=(src/get_next_line.c includes/get_next_line.h auteur Makefile)
 
 for DIR in ${CPY[@]}; do
 	cp -r $DIR $PROJECT_DIR
 done
 
 cd $PROJECT_DIR
-make
-sed -i'' -s 's/<get_next_line.h>/"get_next_line.h"/g' $PROJECT_DIR/get_next_line.c
-
-RM=(Makefile main.c)
-
-for DIR in ${RM[@]}; do
-	rm $PROJECT_DIR/$DIR
-done
-
-find $PROJECT_DIR -mindepth 2 -type d -name ".git" -exec rm -rf {} \; 2>/dev/null
-ls -la $PROJECT_DIR
+LIBDIR=. make deps
+sed -i'' -s 's/<get_next_line.h>/"get_next_line.h"/g' get_next_line.c
+rm Makefile
+ls -la
 
 exit 0
