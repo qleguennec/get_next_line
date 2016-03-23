@@ -51,7 +51,7 @@ $(TARGET): $(LIBS) $(OBJECTS)
 
 $(LIBDIR)/%:
 	@git clone http://github.com/qleguennec/$(@F).git $@
-	@make -C $@ purge
+	@make -s -C $@ purge
 
 .PHONY: clean
 clean:
