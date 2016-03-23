@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SIZES=(1 10 42 100 1000 10000)
+SIZES=(1 100)
 
 BLACK="\033[0;30m"
 RED="\033[0;31m"
@@ -16,36 +16,10 @@ OK=$GREEN
 NOK=$RED
 INFO=$CYAN
 
-function buff_size {
-	sed -i'' -s "s/define BUFF_SIZE.*/define BUFF_SIZE $1/" get_next_line.h
-}
-
-OLDDIR=$PWD
 make rendu
-cp test/main.c /tmp/libgnl
-cd /tmp/libgnl
-
-echo -e "$INFO"Simple cat tests$END
-for SIZE in ${SIZES[@]}; do
-	buff_size $SIZE
-	make -C libft/ fclean > /dev/null && make -C libft > /dev/null
-	clang -Wall -Wextra -Werror -I libft/includes -o get_next_line.o -c get_next_line.c
-	clang -Wall -Wextra -Werror -I libft/includes -o main.o -c main.c
-	clang -o gnl-test main.o get_next_line.o -I libft/includes -L libft/ -lft
-	echo -en "Testing for BUFF_SIZE\t$SIZE\t"
-	MY=$(./gnl-test cat get_next_line.c)
-	CAT=$(cat get_next_line.c)
-	if [ ! "$MY" = "$CAT" ]; then
-		echo "$MY"
-		echo -e "$NOK"WRONG FOR SIZE $SIZE$END
-		exit 1
-	else
-		echo -e "$OK"OK$END
-	fi
-done
-
-cd $OLDDIR
-make rendu
+if [ "$?" -ne 0 ]; then
+	exit 1
+fi
 
 if [ ! -d "test/moulitest" ]; then
 	echo -ne "$INFO""Fetching moulitest "$END
@@ -70,9 +44,10 @@ fi
 RESULT=$(cat result.log | grep ">>>>" | grep "[FAIL]")
 if [ -z "$RESULT" ]; then
 	echo -e "$OK"MOULITEST OK$END
+	cat result.log | grep ">>>>"
 	exit 0
 else
 	echo -e "$NOK"MOULITEST NOK$END
-	echo -e $RESULT
+	cat result.log | grep ">>>>"
 	exit 1
 fi

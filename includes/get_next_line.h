@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 21:06:49 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/03/19 00:13:39 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/03/23 22:51:58 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#define BUFF_SIZE 10000
+#define BUFF_SIZE		1
 #define SEP_CHAR		'\n'
 #define READ_LIST		stat[fd]->read
 #define LAST_READ		((t_read *)stat[fd]->read->content)->str
