@@ -19,7 +19,7 @@ else
 	mkdir $PROJECT_DIR
 fi
 
-CPY=(get_next_line.* Makefile main.c)
+CPY=(get_next_line.* Makefile main.c auteur)
 
 for DIR in ${CPY[@]}; do
 	cp -r $DIR $PROJECT_DIR
