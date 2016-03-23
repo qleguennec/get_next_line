@@ -1,7 +1,7 @@
 # Directories
 BINDIR		=	.
 SRCDIR		=	.
-BUILDDIR	=	.
+BUILDDIR	=	build
 LIBDIR		=	.
 INCLUDE		=	libft/includes
 NAME		=	gnl-test
@@ -35,30 +35,28 @@ LIBS		=	$(addprefix $(BUILDDIR)/, $(addsuffix .a,$(LIBSRC)))
 
 all: $(TARGET)
 
-$(BUILDDIR)/%.o: $(SRCDIR)/%.c $(BUILDDIR)
+$(BUILDDIR)/%.o: $(SRCDIR)/%.c
+	@[ -d $(BUILDDIR) ] || mkdir $(BUILDDIR); true
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo $(GREEN)+++ obj: $(YELLOW)$(@F)$(END)
 
-$(BUILDDIR)/%.a: $(LIBDIR)/% $(BUILDDIR) $(LIBDIR)/$(LIBSRC)
-	@make -s -C $< > /dev/null
-	@cp $</$(@F) $@
+$(BUILDDIR)/%.a: $(LIBDIR)/%
+	@[ -d $(BUILDDIR) ] || mkdir $(BUILDDIR); true
+	@BINDIR=$(CURDIR)/$(BUILDDIR) make -s -C $< > /dev/null
 	@echo $(GREEN)+++ lib: $(CYAN)$(@F)$(END)
 
 $(TARGET): $(LIBS) $(OBJECTS)
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJECTS) $(LIBFLAGS)
 	@echo $(GREEN)+++ bin: $(BLUE)$(NAME)$(END)
 
-$(BUILDDIR):
-	@mkdir $(BUILDDIR)
-
 $(LIBDIR)/$(LIBSRC):
 	@git clone http://github.com/qleguennec/$(@F).git $@
-	@cp $@/includes/$(@F).h $(INCLUDE) 2> /dev/null || true
 
 .PHONY: clean
 clean:
 	@rm $(LIBS) 2> /dev/null && echo $(RED)--- lib: $(CYAN)$(LIBS:$(BUILDDIR)/%=%)$(END); true
 	@rm $(OBJECTS) 2> /dev/null && echo $(RED)--- obj: $(YELLOW)$(OBJECTS:$(BUILDDIR)/%=%)$(END); true
+	@[ "$(find $(BUILDDIR) -maxdepth 0 -empty)" ] || rm -r $(BUILDDIR) 2> /dev/null; true
 
 .PHONY:	fclean
 fclean: clean
@@ -71,3 +69,11 @@ re: fclean all
 test:
 	@test/test-functions-used.sh
 	@test/test.sh $(ARGS)
+
+.PHONY: rendu
+rendu:
+	@util/rendu.sh
+
+get-%:
+	@echo '$($*)'
+
