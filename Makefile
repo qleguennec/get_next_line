@@ -32,7 +32,7 @@ SRC			+=	get_next_line.c
 LIBSRC		=	libft
 
 OBJECTS		=	$(addprefix $(BUILDDIR)/, $(SRC:%.c=%.o))
-LIBS		=	$(addprefix $(LIBSRC)/, $(addsuffix .a,$(LIBSRC)))
+LIBS		=	$(addprefix $(LIBDIR)/, $(addsuffix .a,$(LIBSRC)))
 
 all: $(TARGET)
 
