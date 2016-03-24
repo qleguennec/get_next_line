@@ -10,8 +10,6 @@ RENDU_URL=$1
 echo NAME: $PROJECT_NAME
 echo DIR: $PROJECT_DIR
 
-OLDDIR=$PWD
-
 if [ -n "$RENDU_URL" ]; then
 	git clone $42_URL /tmp
 else
@@ -28,7 +26,7 @@ for DIR in ${CPY[@]}; do
 done
 
 cd $PROJECT_DIR
-LIBDIR=. make deps
+DEPSDIR=. make deps
 sed -i'' -s 's/<get_next_line.h>/"get_next_line.h"/g' get_next_line.c
 rm Makefile
 ls -la
