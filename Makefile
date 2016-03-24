@@ -32,7 +32,7 @@ SRC			+=	get_next_line.c
 LIBSRC		=	libft
 
 OBJECTS		=	$(addprefix $(BUILDDIR)/, $(SRC:%.c=%.o))
-LIBS		=	$(addprefix $(BUILDDIR)/, $(addsuffix .a,$(LIBSRC)))
+LIBS		=	$(addprefix $(LIBSRC)/, $(addsuffix .a,$(LIBSRC)))
 
 all: $(TARGET)
 
@@ -43,7 +43,7 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.c
 
 $(LIBDIR)/%.a: $(DEPSDIR)/%
 	@[ -d $(BUILDDIR)/$* ] || mkdir -p $(BUILDDIR)/$*; true
-	@BINDIR=$(CURDIR)/$(LIBDIR)	BUILDDIR=$(CURDIR)/$(BUILDDIR)/$*	\
+	@BINDIR=$(CURDIR)/$(LIBDIR) BUILDDIR=$(CURDIR)/$(BUILDDIR)/$*	\
 		make -s -C $< > /dev/null
 	@echo $(GREEN)+++ static lib:'\t'$(END)$(LIBDIR)/'\t'$(CYAN)$(@F)$(END)
 
