@@ -5,7 +5,7 @@ BUILDDIR	?=	build
 LIBDIR		?=	$(BUILDDIR)
 DEPSDIR		?=	lib
 INCLUDE		+=	includes
-INCLUDE		+=	$(DEPSDIR)/$(LIBSRC)/includes
+INCLUDE		+=	$(addsuffix /includes,$(LIBS))
 NAME		=	libgnl.a
 TARGET		=	$(BINDIR)/$(NAME)
 
@@ -29,10 +29,10 @@ END			=	"\033[0m"
 SRC			+=	get_next_line.c
 
 # Libraries
-LIBSRC		=	libft
+LIBSRC		+=	libft
 
 OBJECTS		=	$(addprefix $(BUILDDIR)/, $(SRC:%.c=%.o))
-LIBS		=	$(addprefix $(LIBDIR)/, $(addsuffix .a,$(LIBSRC)))
+LIBS		=	$(addprefix $(DEPSDIR)/, $(LIBSRC))
 
 all: $(TARGET)
 
@@ -41,7 +41,7 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo $(GREEN)+++ obj:'\t'$(END)$(BUILDDIR)/$(YELLOW)'\t'$(@F)$(END)
 
-$(TARGET): $(DEPSDIR)/$(LIBSRC) $(OBJECTS)
+$(TARGET): $(LIBS) $(OBJECTS)
 	@ar rc $(@) $(OBJECTS)
 	@echo $(GREEN)+++ target:'\t'$(END)$(BINDIR)/'\t'$(BLUE)$(NAME)$(END)
 
@@ -52,8 +52,6 @@ $(DEPSDIR)/%:
 .PHONY: clean fclean re deps clean-deps re-deps test rendu purge get-%
 
 clean:
-	@rm $(LIBS) 2> /dev/null &&	\
-	echo $(RED)--- static lib:'\t'$(END)$(LIBDIR)/'\t'$(CYAN)$(LIBS:$(LIBDIR)/%.a=%.a); true
 	@rm $(OBJECTS) 2> /dev/null	\
 	&& echo $(RED)--- obj:'\t'$(END)$(BUILDDIR)/'\t'$(YELLOW)$(OBJECTS:$(BUILDDIR)/%=%)$(END); true
 
@@ -63,7 +61,7 @@ fclean: clean
 
 re: fclean all
 
-deps: $(addprefix $(DEPSDIR)/, $(LIBSRC))
+deps: $(LIBS)
 
 clean-deps:
 	@rm -rf $(DEPSDIR)
