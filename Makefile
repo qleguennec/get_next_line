@@ -41,13 +41,7 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo $(GREEN)+++ obj:'\t'$(END)$(BUILDDIR)/$(YELLOW)'\t'$(@F)$(END)
 
-$(LIBDIR)/%.a: $(DEPSDIR)/%
-	@[ -d $(BUILDDIR)/$* ] || mkdir -p $(BUILDDIR)/$*; true
-	@BINDIR=$(CURDIR)/$(LIBDIR) BUILDDIR=$(CURDIR)/$(BUILDDIR)/$*	\
-		make -s -C $< > /dev/null
-	@echo $(GREEN)+++ static lib:'\t'$(END)$(LIBDIR)/'\t'$(CYAN)$(@F)$(END)
-
-$(TARGET): $(LIBS) $(OBJECTS)
+$(TARGET): $(DEPSDIR)/$(LIBSRC) $(OBJECTS)
 	@ar rc $(@) $(OBJECTS)
 	@echo $(GREEN)+++ target:'\t'$(END)$(BINDIR)/'\t'$(BLUE)$(NAME)$(END)
 
@@ -59,14 +53,13 @@ $(DEPSDIR)/%:
 
 clean:
 	@rm $(LIBS) 2> /dev/null &&	\
-		echo $(RED)--- static lib:'\t'$(END)$(LIBDIR)/'\t'$(CYAN)$(LIBS:$(LIBDIR)/%.a=%.a); true
+	echo $(RED)--- static lib:'\t'$(END)$(LIBDIR)/'\t'$(CYAN)$(LIBS:$(LIBDIR)/%.a=%.a); true
 	@rm $(OBJECTS) 2> /dev/null	\
-		&& echo $(RED)--- obj:'\t'$(END)$(BUILDDIR)/'\t'$(YELLOW)$(OBJECTS:$(BUILDDIR)/%=%)$(END); true
-	@[ "$(find $(BUILDDIR) -maxdepth 0 -empty)" ] || rm -r $(BUILDDIR) 2> /dev/null; true
+	&& echo $(RED)--- obj:'\t'$(END)$(BUILDDIR)/'\t'$(YELLOW)$(OBJECTS:$(BUILDDIR)/%=%)$(END); true
 
 fclean: clean
-	@rm $(TARGET) > /dev/null \
-		&& echo $(RED)--- target:'\t'$(END)$(BINDIR)'\t'$(BLUE)$(NAME)$(END); true
+	@rm $(TARGET) 2> /dev/null \
+	&& echo $(RED)--- target:'\t'$(END)$(BINDIR)'\t'$(BLUE)$(NAME)$(END); true
 
 re: fclean all
 
