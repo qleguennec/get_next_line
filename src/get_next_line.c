@@ -6,11 +6,13 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 21:05:00 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/04/21 12:22:15 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/04/21 14:11:26 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <get_next_line.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 static int	do_read
 	(int fd)
@@ -19,12 +21,12 @@ static int	do_read
 
 	if (!(l = ft_lstnew(NULL, sizeof(t_read))))
 		return (0);
-	ft_lstadd(&READ_LIST, l);
-	LAST_READ_RET = read(fd, LAST_READ, BUFF_SIZE);
-	if (LAST_READ_RET < 0)
+	ft_lstadd(&RL, l);
+	LR_RET = read(fd, LR, BUFF_SIZE);
+	if (LR_RET < 0)
 		return (0);
-	LAST_READ_LEN = LAST_READ_RET;
-	stat[fd]->slen += LAST_READ_LEN;
+	LR_LEN = LR_RET;
+	g_stat[fd]->slen += LR_LEN;
 	return (1);
 }
 
@@ -34,19 +36,19 @@ static int	copy
 	char	*buf;
 	t_list	*l;
 
-	if (!(*line = ft_strnew(stat[fd]->slen)))
+	if (!(*line = ft_strnew(g_stat[fd]->slen)))
 		return (0);
-	buf = *line + stat[fd]->slen - (stat[fd]->line_end - LAST_READ);
-	ft_memcpy(buf, LAST_READ, stat[fd]->line_end - LAST_READ);
-	l = READ_LIST;
-	READ_LIST = READ_LIST->next;
-	while (READ_LIST)
+	buf = *line + g_stat[fd]->slen - (g_stat[fd]->line_end - LR);
+	ft_memcpy(buf, LR, g_stat[fd]->line_end - LR);
+	l = RL;
+	RL = RL->next;
+	while (RL)
 	{
-		buf -= LAST_READ_LEN;
-		ft_memcpy(buf, LAST_READ, LAST_READ_LEN);
-		READ_LIST = READ_LIST->next;
+		buf -= LR_LEN;
+		ft_memcpy(buf, LR, LR_LEN);
+		RL = RL->next;
 	}
-	READ_LIST = l;
+	RL = l;
 	return (1);
 }
 
@@ -55,28 +57,28 @@ static int	end
 {
 	t_list	*l;
 
-	if (!ret && READ_LIST->next && ((t_read*)READ_LIST->next->content)->slen)
+	if (!ret && RL && RL->next && ((t_read*)RL->next->content)->slen)
 	{
-		l = READ_LIST;
-		READ_LIST = READ_LIST->next;
-		stat[fd]->line_end = LAST_READ + LAST_READ_LEN; 
-		while (READ_LIST)
+		g_stat[fd]->slen = 0;
+		l = RL;
+		RL = RL->next;
+		g_stat[fd]->line_end = LR + LR_LEN;
+		while (RL)
 		{
-			stat[fd]->slen += LAST_READ_LEN;
-			READ_LIST = READ_LIST->next;
+			g_stat[fd]->slen += LR_LEN;
+			RL = RL->next;
 		}
-		READ_LIST = l->next;
+		RL = l->next;
 		ret = copy(fd, line) ? 1 : -1;
 		if (ret == 1)
 		{
-		stat[fd]->slen = 0;
-			ft_lstdel(&l, &ft_delete);
+			ft_lstdel(&RL, &ft_delete);
 			return (1);
 		}
 	}
 	*line = NULL;
-	ft_lstdel(&READ_LIST, &ft_delete);
-	ft_memdel((void**)&stat[fd]);
+	ft_lstdel(&RL, &ft_delete);
+	ft_memdel((void**)&g_stat[fd]);
 	return (ret);
 }
 
@@ -85,24 +87,26 @@ int			get_next_line
 {
 	if (BUFF_SIZE <= 0 || !line || fd < 0 || fd > 255)
 		return (-1);
-	if (!(stat[fd] || !(stat[fd] = ft_memalloc(sizeof(*stat[fd])))
-		|| (READ_LIST = ft_lstnew(NULL, sizeof(t_read)))))
+	if (!(g_stat[fd] || !(g_stat[fd] = ft_memalloc(sizeof(*g_stat[fd])))
+		|| (RL = ft_lstnew(NULL, sizeof(t_read)))))
 		return (-1);
-	if (!(stat[fd]->line_end = ft_memchr(LAST_READ, SEP_CHAR, LAST_READ_LEN)))
+	if (!RL)
+		return (end(fd, line, 0));
+	if (!(g_stat[fd]->line_end = ft_memchr(LR, SEP_CHAR, LR_LEN)))
 	{
 		if (!do_read(fd))
 			return (end(fd, line, -1));
-		if (!LAST_READ_RET)
+		if (!LR_RET)
 			return (end(fd, line, 0));
 		return (get_next_line(fd, line));
 	}
-	LAST_READ_LEN -= stat[fd]->line_end - LAST_READ + 1;
-	stat[fd]->slen -= LAST_READ_LEN + 1;
+	LR_LEN -= g_stat[fd]->line_end - LR + 1;
+	g_stat[fd]->slen -= LR_LEN + 1;
 	if (!copy(fd, line))
 		return (-1);
-	stat[fd]->slen = LAST_READ_LEN;
-	ft_memmove(LAST_READ, stat[fd]->line_end + 1, LAST_READ_LEN);
-	ft_bzero(LAST_READ + LAST_READ_LEN, BUFF_SIZE - LAST_READ_LEN);
-	ft_lstdel(&READ_LIST->next, &ft_delete);
+	g_stat[fd]->slen = LR_LEN;
+	ft_memmove(LR, g_stat[fd]->line_end + 1, LR_LEN);
+	ft_bzero(LR + LR_LEN, BUFF_SIZE - LR_LEN);
+	ft_lstdel(&RL->next, &ft_delete);
 	return (1);
 }

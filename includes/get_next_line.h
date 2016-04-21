@@ -6,25 +6,22 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 21:06:49 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/03/23 22:51:58 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/04/21 14:15:24 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-#include <libft.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <fcntl.h>
-#include <unistd.h>
+# include <libft.h>
+# include <stdlib.h>
 
-#define BUFF_SIZE		1
-#define SEP_CHAR		'\n'
-#define READ_LIST		stat[fd]->read
-#define LAST_READ		((t_read *)stat[fd]->read->content)->str
-#define LAST_READ_LEN	((t_read *)stat[fd]->read->content)->slen
-#define LAST_READ_RET	((t_read *)stat[fd]->read->content)->r_return
+# define BUFF_SIZE	10
+# define SEP_CHAR	'\n'
+# define RL			g_stat[fd]->read
+# define LR			((t_read *)g_stat[fd]->read->content)->str
+# define LR_LEN		((t_read *)g_stat[fd]->read->content)->slen
+# define LR_RET		((t_read *)g_stat[fd]->read->content)->r_return
 
 typedef struct	s_status
 {
@@ -40,7 +37,7 @@ typedef struct	s_read
 	int			r_return;
 }				t_read;
 
-static t_status	*stat[256] = {NULL};
+static t_status	*g_stat[256] = {NULL};
 
 int				get_next_line(int fd, char **line);
 
