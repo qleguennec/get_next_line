@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 21:05:00 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/03/23 22:51:04 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/04/21 12:22:15 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ static int	end
 
 	if (!ret && READ_LIST->next && ((t_read*)READ_LIST->next->content)->slen)
 	{
-		stat[fd]->slen = 0;
 		l = READ_LIST;
 		READ_LIST = READ_LIST->next;
 		stat[fd]->line_end = LAST_READ + LAST_READ_LEN; 
@@ -70,6 +69,7 @@ static int	end
 		ret = copy(fd, line) ? 1 : -1;
 		if (ret == 1)
 		{
+		stat[fd]->slen = 0;
 			ft_lstdel(&l, &ft_delete);
 			return (1);
 		}
