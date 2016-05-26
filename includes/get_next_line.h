@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 21:06:49 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/04/21 14:15:24 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/05/26 22:19:47 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,14 @@
 
 # include <libft.h>
 # include <stdlib.h>
+#include <stdio.h>
 
-# define BUFF_SIZE	10
+# define BUFF_SIZE	1
 # define SEP_CHAR	'\n'
-# define RL			g_stat[fd]->read
-# define LR			((t_read *)g_stat[fd]->read->content)->str
-# define LR_LEN		((t_read *)g_stat[fd]->read->content)->slen
-# define LR_RET		((t_read *)g_stat[fd]->read->content)->r_return
+# define RL			g_stat->read
+# define LR			((t_read *)g_stat->read->content)->str
+# define LR_LEN		((t_read *)g_stat->read->content)->slen
+# define LR_RET		((t_read *)g_stat->read->content)->r_return
 
 typedef struct	s_status
 {
@@ -37,7 +38,7 @@ typedef struct	s_read
 	int			r_return;
 }				t_read;
 
-static t_status	*g_stat[256] = {NULL};
+static t_status	*g_stat = NULL;
 
 int				get_next_line(int fd, char **line);
 
