@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 21:06:49 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/05/26 22:19:47 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/06/01 01:43:50 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct	s_status
 	t_list		*read;
 	char		*line_end;
 	size_t		slen;
+	int			end;
 }				t_status;
 
 typedef struct	s_read
