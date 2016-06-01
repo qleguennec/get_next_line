@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 21:05:00 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/06/01 03:14:08 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/06/02 01:48:34 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,39 +16,43 @@
 
 int			get_next_line(int fd, char **line)
 {
-	t_list	*l;
-	char	buffer[BUFF_SIZE];
-	char	*buf;
+	static t_list	*stat = NULL;
 	char	*tmp;
-	int		ret;
+	t_list	*a;
+	t_list	*b;
 
-	if (g_stat)
+	a = NULL;
+	b = NULL;
+	if (stat && (tmp = ft_memchr(stat->content, SEP_CHAR, stat->content_size)))
 	{
-		tmp = ft_memchr(g_stat->content, SEP_CHAR, g_stat->content_size);
-		ret = g_stat->content_size;
-		printf("(%d)\n", ret);
-		buf = g_stat->content;
-	}
-	if (!tmp)
-	{
-		ret = read(fd, buffer, BUFF_SIZE);
-		buf = buffer;
-		if (!ret)
-			return (0);
-		tmp = ft_memchr(buf, SEP_CHAR, ret);
-	}
-	if (tmp)
-	{
-		l = ft_lstnew(buf, tmp - buf);
-		ft_lstadd(&g_stat, l);
-		ft_lstrevbuild(g_stat);
-		*line = ft_strnew(g_stat->content_size);
-		ft_memcpy(*line, g_stat->content, g_stat->content_size);
-		ft_memdel((void **)&g_stat);
-		g_stat = ft_lstnew(tmp + 1, (size_t)ret - (tmp + 1 - buf));
+		if (tmp == stat->content)
+		{
+			a = stat;
+			ft_lstrevbuild(a);
+			*line = ft_strnew(a->content_size - 1);
+			ft_memcpy(*line, a->content, a->content_size - 1);
+			ft_lstdel(&stat, &ft_delete);
+			return (1);
+		}
+		a = ft_lstnew(stat->content, tmp - (char *)stat->content);
+		a->next = stat->next;
+		ft_lstrevbuild(a);
+		*line = ft_strnew(a->content_size);
+		ft_memcpy(*line, a->content, a->content_size);
+		a->content_size = stat->content_size - (tmp + 1 - (char *)stat->content);
+		ft_memmove(stat->content, tmp + 1, a->content_size);
+		ft_bzero(stat->content + a->content_size, stat->content_size - a->content_size);
+		stat->content_size = a->content_size;
+		stat->next = NULL;
+		ft_lstdel(&a, &ft_delete);
 		return (1);
 	}
-	l = ft_lstnew(buf, ret);
-	ft_lstadd(&g_stat, l);
+	b = ft_lstnew(NULL, BUFF_SIZE);
+	b->content_size = read(fd, b->content, BUFF_SIZE);
+	if (!b->content_size)
+		return (0);
+	ft_lstadd(&stat, b);
+	if (b->content_size < BUFF_SIZE)
+		((char *)b->content)[b->content_size++] = SEP_CHAR;
 	return (get_next_line(fd, line));
 }
