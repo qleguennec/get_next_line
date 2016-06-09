@@ -6,13 +6,15 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 21:05:00 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/06/07 22:15:20 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/06/07 22:32:24 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <get_next_line.h>
+#include "get_next_line.h"
 #include <fcntl.h>
 #include <unistd.h>
+#include <libft.h>
+#include <stdlib.h>
 
 static int			linecpy
 	(t_list **l, char **line, t_list **st, char *tmp)
@@ -82,6 +84,20 @@ int					gnl_byfd
 	return (do_read(st, fd, line));
 }
 
+static void			lstdel_fd
+	(t_list *a, t_list *l)
+{
+	if (!l)
+		return ;
+	while (a && a->next != l)
+		a = a->next;
+	if (!a)
+		return ;
+	l = l->next;
+	ft_lstdelone(&a->next, &ft_delete);
+	a->next = l;
+}
+
 int					get_next_line
 	(int fd, char **line)
 {
@@ -102,5 +118,10 @@ int					get_next_line
 		ft_lstadd(&st_byfd, l);
 	}
 	gnl_ret = gnl_byfd((t_list **)&l->content, fd, line);
+	if (gnl_ret <= 0)
+	{
+		*line = NULL;
+		lstdel_fd(st_byfd, l);
+	}
 	return (gnl_ret);
 }

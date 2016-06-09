@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 21:06:49 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/06/07 22:16:37 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/06/08 16:43:11 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 # define GET_NEXT_LINE_H
 
 # include <libft.h>
-# include <stdlib.h>
 
-# define BUFF_SIZE 10000
+# define BUFF_SIZE 42
 # define SEP_CHAR '\n'
 
 int				get_next_line(int fd, char **line);
