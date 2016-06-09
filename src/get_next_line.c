@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 21:05:00 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/06/09 16:04:18 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/06/09 18:37:09 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,25 +62,22 @@ int					gnl_byfd
 	char			*tmp;
 	t_list			*a;
 
-	if ((*st) &&
-		(tmp = ft_memchr((*st)->data, SEP_CHAR, (*st)->size)))
+	if (!((*st) && (tmp = ft_memchr((*st)->data, SEP_CHAR, (*st)->size))))
+		return (do_read(st, fd, line));
+	if (tmp == (*st)->data && (*st)->next)
 	{
-		if (tmp == (*st)->data && (*st)->next)
-		{
-			if (!(linecpy(&(*st)->next, line, NULL, NULL)))
-				return (-1);
-			if ((*st)->size-- > 1)
-				ft_memmove((*st)->data, (*st)->data + 1, (*st)->size);
-			if (!(*st)->size)
-				ft_lstdel(st, &ft_delete);
-			return (1);
-		}
-		if (!(a = ft_lstnew((*st)->data, tmp - (char *)(*st)->data)))
+		if (!(linecpy(&(*st)->next, line, NULL, NULL)))
 			return (-1);
-		a->next = (*st)->next;
-		return (linecpy(&a, line, st, tmp) ? 1 : -1);
+		if ((*st)->size-- > 1)
+			ft_memmove((*st)->data, (*st)->data + 1, (*st)->size);
+		if (!(*st)->size)
+			ft_lstdel(st, &ft_delete);
+		return (1);
 	}
-	return (do_read(st, fd, line));
+	if (!(a = ft_lstnew((*st)->data, tmp - (char *)(*st)->data)))
+		return (-1);
+	a->next = (*st)->next;
+	return (linecpy(&a, line, st, tmp) ? 1 : -1);
 }
 
 static void			lstdel_fd
