@@ -6,11 +6,11 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 21:05:00 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/06/09 18:37:09 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/06/24 23:56:41 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include <libgnl.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <libft.h>
