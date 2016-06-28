@@ -6,14 +6,14 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 21:05:00 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/06/24 23:56:41 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/06/28 16:36:04 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libgnl.h>
+#include "libgnl.h"
+#include "../libft/libft.h"
 #include <fcntl.h>
 #include <unistd.h>
-#include <libft.h>
 #include <stdlib.h>
 
 static int			linecpy
@@ -22,12 +22,12 @@ static int			linecpy
 	t_list			*s;
 
 	s = st ? *st : NULL;
-	if (!(ft_lstrevbuild(*l)))
+	if (!(list_concat(*l)))
 		return (0);
 	if (!(*line = ft_strnew((*l)->size)))
 		return (0);
 	ft_memcpy(*line, (*l)->data, (*l)->size);
-	ft_lstdel(l, &ft_delete);
+	list_del(l);
 	if (s && tmp)
 	{
 		s->size -= tmp + 1 - (char *)s->data;
@@ -35,7 +35,7 @@ static int			linecpy
 		ft_bzero(s->data + s->size, BUFF_SIZE - s->size);
 		s->next = NULL;
 		if (!s->size)
-			ft_lstdel(st, &ft_delete);
+			list_del(st);
 	}
 	return (1);
 }
@@ -45,14 +45,14 @@ static int			do_read
 {
 	t_list			*a;
 
-	if (!(a = ft_lstnew(NULL, BUFF_SIZE)))
+	if (!(a = list_new(NULL, BUFF_SIZE)))
 		return (-1);
 	a->size = read(fd, a->data, BUFF_SIZE);
 	if ((int)a->size < 0)
 		return (-1);
 	if (!a->size)
 		return (st ? linecpy(st, line, NULL, NULL) : 0);
-	ft_lstadd(st, a);
+	list_add(st, a);
 	return (gnl_byfd(st, fd, line));
 }
 
@@ -71,16 +71,16 @@ int					gnl_byfd
 		if ((*st)->size-- > 1)
 			ft_memmove((*st)->data, (*st)->data + 1, (*st)->size);
 		if (!(*st)->size)
-			ft_lstdel(st, &ft_delete);
+			list_del(st);
 		return (1);
 	}
-	if (!(a = ft_lstnew((*st)->data, tmp - (char *)(*st)->data)))
+	if (!(a = list_new((*st)->data, tmp - (char *)(*st)->data)))
 		return (-1);
 	a->next = (*st)->next;
 	return (linecpy(&a, line, st, tmp) ? 1 : -1);
 }
 
-static void			lstdel_fd
+static void			list_del_fd
 	(t_list *a, t_list *l)
 {
 	if (!l)
@@ -90,7 +90,7 @@ static void			lstdel_fd
 	if (!a)
 		return ;
 	l = l->next;
-	ft_lstdelone(&a->next, &ft_delete);
+	list_del_one(&a->next);
 	a->next = l;
 }
 
@@ -111,13 +111,13 @@ int					get_next_line
 		if (!(l = ft_memalloc(sizeof(*st_byfd))))
 			return (-1);
 		l->size = (size_t)fd;
-		ft_lstadd(&st_byfd, l);
+		list_add(&st_byfd, l);
 	}
 	gnl_ret = gnl_byfd((t_list **)&l->data, fd, line);
 	if (gnl_ret <= 0)
 	{
 		*line = NULL;
-		lstdel_fd(st_byfd, l);
+		list_del_fd(st_byfd, l);
 	}
 	return (gnl_ret);
 }

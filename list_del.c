@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   list_del.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/02/21 21:06:49 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/06/09 15:52:36 by qle-guen         ###   ########.fr       */
+/*   Created: 2015/11/30 11:28:15 by qle-guen          #+#    #+#             */
+/*   Updated: 2016/06/28 16:38:42 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "list.h"
 
-# include <libft.h>
+void		list_del
+	(t_list **alist)
+{
+	t_list	*buf;
 
-# define BUFF_SIZE 42
-# define SEP_CHAR '\n'
-
-int				get_next_line(int fd, char **line);
-int				gnl_byfd(t_list **st, int fd, char **line);
-
-#endif
+	if (*alist)
+	{
+		buf = (*alist)->next;
+		list_del_one(alist);
+		list_del(&buf);
+	}
+}

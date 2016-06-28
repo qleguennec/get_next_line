@@ -1,18 +1,11 @@
 # Directories
 BINDIR		?=	.
-SRCDIR		?=	src
 BUILDDIR	?=	build
-LIBDIR		?=	$(BUILDDIR)
-DEPSDIR		?=	lib
-INCLUDE		+=	includes
-INCLUDE		+=	$(addsuffix /includes,$(LIBS))
-NAME		=	libgnl.a
-TARGET		=	$(BINDIR)/$(NAME)
+NAME		=	$(BINDIR)/libgnl.a
 
 # Compiler options
 CC			=	clang
-LIBFLAGS	=	-L$(LIBDIR) $(subst lib,-l,$(LIBSRC))
-CFLAGS		=	$(addprefix -I,$(INCLUDE)) -Wall -Wextra -Werror -g3
+CFLAGS		=	$(addprefix -I,$(INCLUDE)) -Wall -Wextra -Werror -g
 
 # Color output
 BLACK		=	"\033[0;30m"
@@ -25,58 +18,31 @@ CYAN		=	"\033[0;36m"
 WHITE		=	"\033[0;37m"
 END			=	"\033[0m"
 
-# Source files
-SRC			+=	get_next_line.c
-
-# Libraries
-LIBSRC		+=	libft
+SRC += get_next_line.c
+SRC += list_add.c
+SRC += list_concat.c
+SRC += list_del.c
+SRC += list_del_one.c
+SRC += list_new.c
 
 OBJECTS		=	$(addprefix $(BUILDDIR)/, $(SRC:%.c=%.o))
-LIBS		=	$(addprefix $(DEPSDIR)/, $(LIBSRC))
 
-all: $(TARGET)
+all: $(NAME)
 
-$(BUILDDIR)/%.o: $(SRCDIR)/%.c
-	@[ -d $(BUILDDIR) ] || mkdir $(BUILDDIR); true
-	@$(CC) $(CFLAGS) -c $< -o $@
-	@echo $(GREEN)+++ obj:'\t'$(END)$(BUILDDIR)/$(YELLOW)'\t'$(@F)$(END)
+$(BUILDDIR)/%.o: %.c
+	@[ -d $(BUILDDIR) ] || mkdir $(BUILDDIR)
+	@echo -n $(YELLOW)$(NAME)$(END)'\t'
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(TARGET): $(LIBS) $(OBJECTS)
+$(NAME): $(OBJECTS)
 	@ar rc $(@) $(OBJECTS)
-	@echo $(GREEN)+++ target:'\t'$(END)$(BINDIR)/'\t'$(BLUE)$(NAME)$(END)
 
-$(DEPSDIR)/%:
-	@git clone http://github.com/qleguennec/$(@F).git $@
-	@make -s -C $@ purge
-
-.PHONY: clean fclean re deps clean-deps re-deps test rendu purge get-%
+.PHONY: clean fclean re
 
 clean:
-	@rm $(OBJECTS) 2> /dev/null	\
-	&& echo $(RED)--- obj:'\t'$(END)$(BUILDDIR)/'\t'$(YELLOW)$(OBJECTS:$(BUILDDIR)/%=%)$(END); true
+	@rm -rf build/
 
 fclean: clean
-	@rm $(TARGET) 2> /dev/null \
-	&& echo $(RED)--- target:'\t'$(END)$(BINDIR)'\t'$(BLUE)$(NAME)$(END); true
+	@rm -rf $(TARGET)
 
 re: fclean all
-
-deps: $(LIBS)
-
-clean-deps:
-	@rm -rf $(DEPSDIR)
-
-re-deps: clean-deps deps
-
-test:
-	@test/test.sh $(ARGS)
-	@test/test-functions-used.sh
-
-rendu:
-	@util/rendu.sh
-
-purge:
-	@util/purge.sh
-
-get-%:
-	@echo '$($*)'
