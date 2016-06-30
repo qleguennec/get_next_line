@@ -6,14 +6,14 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/28 16:17:47 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/06/28 16:38:31 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/06/30 13:45:49 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIST_H
 # define LIST_H
 
-#include <string.h>
+# include <string.h>
 
 typedef struct		s_list
 {
