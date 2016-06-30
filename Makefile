@@ -31,7 +31,7 @@ all: $(NAME)
 
 $(BUILDDIR)/%.o: %.c
 	@[ -d $(BUILDDIR) ] || mkdir $(BUILDDIR)
-	@echo -n $(YELLOW)$(NAME)$(END)'\t'
+	@printf $(YELLOW)$(NAME)$(END)'\t'
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJECTS)
