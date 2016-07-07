@@ -6,14 +6,14 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 08:40:07 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/07/07 16:03:06 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/07/07 16:59:34 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# include "libvect/libvect.h"
+# include "../libvect/libvect.h"
 
 # define BUFF_SIZE 1
 
