@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/06 15:06:08 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/07/07 16:59:44 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/07/07 17:45:01 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ static int	cpy
 
 	if ((buf = ft_memchr(v->data, '\n', v->used)))
 	{
-		line->used = 0;
 		if (!vect_add(line, v->data, buf - v->data))
 			return (-1);
 		ft_memmove(v->data, buf + 1, v->used - (buf + 1 - v->data));
@@ -45,7 +44,6 @@ int			get_next_line
 	{
 		if (v->used)
 		{
-			line->used = 0;
 			if (!vect_add(line, v->data, v->used))
 				return (-1);
 			v->used = 0;
