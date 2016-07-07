@@ -5,119 +5,54 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/02/21 21:05:00 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/06/28 16:36:04 by qle-guen         ###   ########.fr       */
+/*   Created: 2016/07/06 15:06:08 by qle-guen          #+#    #+#             */
+/*   Updated: 2016/07/07 14:12:53 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft/libft.h"
 #include "libgnl.h"
-#include "../libft/libft.h"
-#include <fcntl.h>
 #include <unistd.h>
-#include <stdlib.h>
 
-static int			linecpy
-	(t_list **l, char **line, t_list **st, char *tmp)
+static int	cpy
+	(t_vect *v, t_vect *line)
 {
-	t_list			*s;
+	void	*buf;
 
-	s = st ? *st : NULL;
-	if (!(list_concat(*l)))
-		return (0);
-	if (!(*line = ft_strnew((*l)->size)))
-		return (0);
-	ft_memcpy(*line, (*l)->data, (*l)->size);
-	list_del(l);
-	if (s && tmp)
+	if ((buf = ft_memchr(v->data, '\n', v->used)))
 	{
-		s->size -= tmp + 1 - (char *)s->data;
-		ft_memmove(s->data, tmp + 1, s->size);
-		ft_bzero(s->data + s->size, BUFF_SIZE - s->size);
-		s->next = NULL;
-		if (!s->size)
-			list_del(st);
-	}
-	return (1);
-}
-
-static int			do_read
-	(t_list **st, int fd, char **line)
-{
-	t_list			*a;
-
-	if (!(a = list_new(NULL, BUFF_SIZE)))
-		return (-1);
-	a->size = read(fd, a->data, BUFF_SIZE);
-	if ((int)a->size < 0)
-		return (-1);
-	if (!a->size)
-		return (st ? linecpy(st, line, NULL, NULL) : 0);
-	list_add(st, a);
-	return (gnl_byfd(st, fd, line));
-}
-
-int					gnl_byfd
-	(t_list **st, int fd, char **line)
-{
-	char			*tmp;
-	t_list			*a;
-
-	if (!((*st) && (tmp = ft_memchr((*st)->data, SEP_CHAR, (*st)->size))))
-		return (do_read(st, fd, line));
-	if (tmp == (*st)->data && (*st)->next)
-	{
-		if (!(linecpy(&(*st)->next, line, NULL, NULL)))
+		line->used = 0;
+		if (!vect_add(line, v->data, buf - v->data))
 			return (-1);
-		if ((*st)->size-- > 1)
-			ft_memmove((*st)->data, (*st)->data + 1, (*st)->size);
-		if (!(*st)->size)
-			list_del(st);
+		ft_memmove(v->data, buf + 1, v->used - (buf + 1 - v->data));
+		v->used -= buf + 1 - v->data;
 		return (1);
 	}
-	if (!(a = list_new((*st)->data, tmp - (char *)(*st)->data)))
-		return (-1);
-	a->next = (*st)->next;
-	return (linecpy(&a, line, st, tmp) ? 1 : -1);
+	return (0);
 }
 
-static void			list_del_fd
-	(t_list *a, t_list *l)
+int			get_next_line
+	(int fd, t_vect *v, t_vect *line)
 {
-	if (!l)
-		return ;
-	while (a && a->next != l)
-		a = a->next;
-	if (!a)
-		return ;
-	l = l->next;
-	list_del_one(&a->next);
-	a->next = l;
-}
+	int		ret;
 
-int					get_next_line
-	(int fd, char **line)
-{
-	static t_list	*st_byfd = NULL;
-	t_list			*l;
-	int				gnl_ret;
-
-	if (fd < 0 || !line)
+	if (v->data && (ret = cpy(v, line)))
+		return (ret);
+	if (!vect_req(v, BUFF_SIZE)
+		|| (ret = read(fd, v->data + v->used, BUFF_SIZE)) < 0)
 		return (-1);
-	l = st_byfd;
-	while (l && l->size != (size_t)fd)
-		l = l->next;
-	if (!l)
+	if (!ret)
 	{
-		if (!(l = ft_memalloc(sizeof(*st_byfd))))
-			return (-1);
-		l->size = (size_t)fd;
-		list_add(&st_byfd, l);
+		if (v->used)
+		{
+			line->used = 0;
+			if (!vect_add(line, v->data, v->used))
+				return (-1);
+			v->used = 0;
+			return (1);
+		}
+		return (0);
 	}
-	gnl_ret = gnl_byfd((t_list **)&l->data, fd, line);
-	if (gnl_ret <= 0)
-	{
-		*line = NULL;
-		list_del_fd(st_byfd, l);
-	}
-	return (gnl_ret);
+	v->used += ret;
+	return (get_next_line(fd, v, line));
 }

@@ -1,4 +1,5 @@
 # Directories
+PROJECT		=	libgnl
 BINDIR		?=	.
 BUILDDIR	?=	build
 NAME		=	$(BINDIR)/libgnl.a
@@ -19,11 +20,6 @@ WHITE		=	"\033[0;37m"
 END			=	"\033[0m"
 
 SRC += get_next_line.c
-SRC += list_add.c
-SRC += list_concat.c
-SRC += list_del.c
-SRC += list_del_one.c
-SRC += list_new.c
 
 OBJECTS		=	$(addprefix $(BUILDDIR)/, $(SRC:%.c=%.o))
 
@@ -31,18 +27,22 @@ all: $(NAME)
 
 $(BUILDDIR)/%.o: %.c
 	@[ -d $(BUILDDIR) ] || mkdir $(BUILDDIR)
-	@printf $(YELLOW)$(NAME)$(END)'\t'
+	@printf $(YELLOW)$(PROJECT)$(END)'\t'
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJECTS)
+	@printf $(YELLOW)$(PROJECT)$(END)'\t'
 	@ar rc $(@) $(OBJECTS)
+	@echo OK
 
 .PHONY: clean fclean re
 
 clean:
-	@rm -rf build/
+	@printf $(YELLOW)$(PROJECT)$(END)'\t'
+	rm -rf build/
 
 fclean: clean
-	@rm -rf $(TARGET)
+	@printf $(YELLOW)$(PROJECT)$(END)'\t'
+	rm -rf $(NAME)
 
 re: fclean all

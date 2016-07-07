@@ -1,24 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libgnl.h                                           :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/02/21 21:06:49 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/06/30 13:45:15 by qle-guen         ###   ########.fr       */
+/*   Created: 2016/07/07 08:40:07 by qle-guen          #+#    #+#             */
+/*   Updated: 2016/07/07 16:03:06 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBGNL_H
-# define LIBGNL_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-# include "list.h"
+# include "libvect/libvect.h"
 
-# define BUFF_SIZE 42
-# define SEP_CHAR '\n'
+# define BUFF_SIZE 1
 
-int				get_next_line(int fd, char **line);
-int				gnl_byfd(t_list **st, int fd, char **line);
+int		get_next_line(int fd, t_vect *v, t_vect *line);
 
 #endif
