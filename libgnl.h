@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 08:40:07 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/07/07 16:59:34 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/07/08 11:45:21 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "../libvect/libvect.h"
 
-# define BUFF_SIZE 1
+# define BUFF_SIZE 16
 
 int		get_next_line(int fd, t_vect *v, t_vect *line);
 

@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/06 15:06:08 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/07/07 17:45:01 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/07/08 06:16:28 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,12 @@ int			get_next_line
 		return (-1);
 	if (!ret)
 	{
-		if (v->used)
-		{
-			if (!vect_add(line, v->data, v->used))
-				return (-1);
-			v->used = 0;
-			return (1);
-		}
-		return (0);
+		if (!v->used)
+			return (0);
+		if (!vect_add(line, v->data, v->used))
+			return (-1);
+		v->used = 0;
+		return (1);
 	}
 	v->used += ret;
 	return (get_next_line(fd, v, line));
