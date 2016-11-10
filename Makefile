@@ -6,7 +6,7 @@ NAME		=	$(BINDIR)/libgnl.a
 
 # Compiler options
 CC			=	clang
-CFLAGS		=	$(addprefix -I,$(INCLUDE)) -Wall -Wextra -Werror -g
+CFLAGS		=	-Wall -Wextra -Werror -g
 
 # Color output
 BLACK		=	"\033[0;30m"
@@ -19,8 +19,8 @@ CYAN		=	"\033[0;36m"
 WHITE		=	"\033[0;37m"
 END			=	"\033[0m"
 
-SRC += get_next_line.c
-
+SRCEX		=
+SRC			=	$(filter-out $(SRCEX), $(filter %.c, $(shell find . -type f)))
 OBJECTS		=	$(addprefix $(BUILDDIR)/, $(SRC:%.c=%.o))
 
 all: $(NAME)
@@ -35,14 +35,20 @@ $(NAME): $(OBJECTS)
 	@ar rc $(@) $(OBJECTS)
 	@echo OK
 
-.PHONY: clean fclean re
+.PHONY: clean sclean fclean re r
 
 clean:
 	@printf $(YELLOW)$(PROJECT)$(END)'\t'
-	rm -rf build/
+	rm -rf $(BUILDDIR)
+
+sclean:
+	@printf $(YELLOW)$(PROJECT)$(END)'\t'
+	rm -rf $(OBJECTS)
 
 fclean: clean
 	@printf $(YELLOW)$(PROJECT)$(END)'\t'
 	rm -rf $(NAME)
+
+r: sclean all
 
 re: fclean all
