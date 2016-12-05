@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 08:40:07 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/11/30 16:49:55 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/12/05 12:18:12 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@
 #  define GNL_SEP_CHAR '\n'
 # endif
 
-int		get_next_line(int fd, t_vect *v, t_vect *line);
+# define GNL_STR 1
+# define GNL_LINES_COUNT 2
+# define GNL_LINES_TOTAL 4
+
+int		get_next_line(int fd, t_vect *v, t_vect *line, int opts);
 
 #endif
