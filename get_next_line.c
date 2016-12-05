@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/06 15:06:08 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/12/05 12:10:00 by qle-guen         ###   ########.fr       */
+/*   Updated: 2016/12/05 17:07:02 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ static int	cpy
 		vect_add(line, v->data, buf - v->data);
 		ft_memmove(v->data, buf + 1, v->used - (buf + 1 - v->data));
 		v->used -= buf + 1 - v->data;
+		if (opts & GNL_APPEND)
+			vect_mset_end(line, GNL_APPEND_CHAR, 1);
 		if (opts & GNL_STR)
 			vect_mset_end(line, '\0', 1);
 		return (1);
