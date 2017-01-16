@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/06 15:06:08 by qle-guen          #+#    #+#             */
-/*   Updated: 2016/12/05 17:07:02 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/16 15:55:58 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,9 @@ int			get_next_line
 
 	if (v->data && (ret = cpy(v, line, opts)))
 		return (ret);
-	vect_req(v, GNL_BUFF_SIZE + !!(opts & GNL_STR));
+	vect_req(v, GNL_BUFF_SIZE
+		+ !!(opts & GNL_STR)
+		+ !!(opts & GNL_APPEND_CHAR));
 	ret = read(fd, v->data + v->used, GNL_BUFF_SIZE);
 	if (ret < 0)
 		return (ret);
