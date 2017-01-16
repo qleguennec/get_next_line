@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 12:34:37 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/16 16:09:26 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/16 16:47:17 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ int		gnl_read_all(int fd, t_vect *buf, int opts, size_t *calls)
 	vect_init(&v);
 	vect_init(&line);
 	size_set = 0;
-	printf("ignore %s\n", GNL_IGNORE);
-	printf("bufsize %d\n", GNL_BUFF_SIZE);
 	while ((ret = get_next_line(fd, &v, &line, opts)) > 0)
 	{
 		if (!line.used || MEMCHR(GNL_IGNORE, *(char *)line.data))
