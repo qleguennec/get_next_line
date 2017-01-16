@@ -6,14 +6,14 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 12:34:37 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/16 16:58:56 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/16 17:36:08 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/libft.h"
 #include "libgnl.h"
 
-#define OPT(a) (opts & (a))
+#define OPT(a) (!!(opts & (a)))
 
 /*
 ** reads whole fd till EOL

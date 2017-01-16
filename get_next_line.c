@@ -6,13 +6,15 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/06 15:06:08 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/16 15:55:58 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/16 17:37:41 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/libft.h"
 #include "libgnl.h"
 #include <unistd.h>
+
+#define OPT(a) (!!(opts & a))
 
 static int	cpy
 	(t_vect *v, t_vect *line, int opts)
@@ -24,9 +26,9 @@ static int	cpy
 		vect_add(line, v->data, buf - v->data);
 		ft_memmove(v->data, buf + 1, v->used - (buf + 1 - v->data));
 		v->used -= buf + 1 - v->data;
-		if (opts & GNL_APPEND)
+		if (OPT(GNL_APPEND_CHAR))
 			vect_mset_end(line, GNL_APPEND_CHAR, 1);
-		if (opts & GNL_STR)
+		if (OPT(GNL_STR))
 			vect_mset_end(line, '\0', 1);
 		return (1);
 	}
@@ -40,9 +42,7 @@ int			get_next_line
 
 	if (v->data && (ret = cpy(v, line, opts)))
 		return (ret);
-	vect_req(v, GNL_BUFF_SIZE
-		+ !!(opts & GNL_STR)
-		+ !!(opts & GNL_APPEND_CHAR));
+	vect_req(v, GNL_BUFF_SIZE + OPT(GNL_STR) + OPT(GNL_APPEND));
 	ret = read(fd, v->data + v->used, GNL_BUFF_SIZE);
 	if (ret < 0)
 		return (ret);
