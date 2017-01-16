@@ -6,14 +6,14 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 12:34:37 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/16 17:36:08 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/16 17:57:18 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/libft.h"
 #include "libgnl.h"
 
-#define OPT(a) (!!(opts & (a)))
+#define OPT(a) (!!(opts & a))
 
 /*
 ** reads whole fd till EOL
@@ -21,9 +21,8 @@
 ** ignores lines starting with any char in ignore
 ** (used for ignoring comments)
 */
-#include <stdio.h>
 
-int		gnl_read_all(int fd, t_vect *buf, int opts, size_t *calls)
+size_t		gnl_read_all(int fd, t_vect *buf, int opts, size_t *calls)
 {
 	int		ret;
 	int		size_set;
@@ -36,12 +35,12 @@ int		gnl_read_all(int fd, t_vect *buf, int opts, size_t *calls)
 	size_set = 0;
 	while ((ret = get_next_line(fd, &v, &line, opts)) == 1)
 	{
-		if ((!line.used || MEMCHR(GNL_IGNORE, *(char *)line.data))
-			&& !(line.used = 0))
+		if (!line.used
+			|| ((MEMCHR(GNL_IGNORE, *(char *)line.data)) && !(line.used = 0)))
 			continue ;
 		if (size_set && size != line.used)
 			return (0);
-		if (OPT(GNL_CHECK_SIZE) && !size_set && (size_set == 1))
+		if (OPT(GNL_CHECK_SIZE) && !size_set && (size_set = 1))
 			size = line.used;
 		vect_add(buf, line.data, line.used);
 		line.used = 0;
@@ -49,5 +48,5 @@ int		gnl_read_all(int fd, t_vect *buf, int opts, size_t *calls)
 	}
 	free(line.data);
 	free(v.data);
-	return (!ret);
+	return (size_set ? size : !ret);
 }
