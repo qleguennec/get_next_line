@@ -6,15 +6,13 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 13:44:24 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/20 15:38:16 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/21 11:26:17 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/libft.h"
 #include "../libft/malloc.h"
 #include "libgnl.h"
-// TODO remove debug includes
-#include <assert.h>
 
 int		gnl_lines(int fd, t_vect *lines, int opts)
 {
@@ -29,7 +27,6 @@ int		gnl_lines(int fd, t_vect *lines, int opts)
 	{
 		if (!line.used)
 			continue ;
-		assert(ft_strlen(line.data) == line.used - 1);
 		MALLOC_N(dup, line.used);
 		ft_memcpy(dup, line.data, line.used);
 		VECT_ADD(lines, dup);
