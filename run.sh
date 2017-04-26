@@ -10,7 +10,6 @@ fi
 
 RTDIR="rt-$BRANCH"
 CLDIR="cl"
-INCDIR="include"
 GIT="http://github.com/lgatibel/42_rt.git"
 
 if [ -d "$RTDIR/.git" ]; then
@@ -28,13 +27,8 @@ else
 	mkdir "$CLDIR"
 fi
 
-if [ -d "$INCDIR" ]; then
-	rm -rf "$INCDIR"
-	mkdir "$INCDIR"
-else
-	mkdir "$INCDIR"
-fi
-
 echo Copying all cl files from "$RTDIR" to "$CLDIR"
 find "$RTDIR/sources/cl" -print -exec cp {} "$CLDIR" \;
 echo OK
+
+sed -i '' 's/\.\.\/include\///' cl/obj_def.h

@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 12:10:27 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/04/26 13:47:22 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/04/26 15:31:26 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,9 @@ typedef struct		s_cl
 	short			n_lgts;
 }					t_cl;
 
-int
-	client_init
-	(char *host_ip
-	, int port);
-void
-	client_loop
-	(int sockfd);
+void				client_loop(int sockfd , t_vect *data , t_cl *cl); 
+int					client_init(char *host_ip , int port);
+bool				cl_main_krl_init(t_cl *cl);
+bool				cl_main_krl_exec(t_cl *cl);
 
 #endif
