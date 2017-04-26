@@ -6,14 +6,13 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 08:40:07 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/20 13:54:42 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/04/26 12:50:05 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBGNL_H
 # define LIBGNL_H
 
-# include "../gnl_conf.h"
 # include "../libvect/libvect.h"
 
 # ifndef GNL_BUFF_SIZE
@@ -37,6 +36,7 @@
 # define GNL_CHECK_SIZE		4
 
 int		get_next_line(int fd, t_vect *v, t_vect *line, int opts);
+int		gnl_vect(int fd, t_vect *v, t_vect *line, int opts);
 int		gnl_lines(int fd, t_vect *lines, int opts);
 size_t	gnl_read_all(int fd, t_vect *buf, int opts, size_t *calls);
 

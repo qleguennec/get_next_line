@@ -1,38 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gnl_lines.c                                        :+:      :+:    :+:   */
+/*   vect_add.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/20 13:44:24 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/21 11:26:17 by qle-guen         ###   ########.fr       */
+/*   Created: 2016/06/25 18:39:35 by qle-guen          #+#    #+#             */
+/*   Updated: 2017/04/03 12:10:53 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libvect.h"
 #include "../libft/libft.h"
-#include "../libft/malloc.h"
-#include "libgnl.h"
 
-int		gnl_lines(int fd, t_vect *lines, int opts)
+int
+	vect_add
+	(t_vect *v
+	, void *data
+	, size_t size)
 {
-	char	*dup;
-	int		ret;
-	t_vect	buf;
-	t_vect	line;
-
-	vect_init(&buf);
-	vect_init(&line);
-	while ((ret = get_next_line(fd, &buf, &line, opts | GNL_STR)) == 1)
+	vect_req(v, size);
+	if (!data)
 	{
-		if (!line.used)
-			continue ;
-		MALLOC_N(dup, line.used);
-		ft_memcpy(dup, line.data, line.used);
-		VECT_ADD(lines, dup);
-		line.used = 0;
+		ft_bzero(v->data + v->used, size);
+		return (1);
 	}
-	free(line.data);
-	free(buf.data);
-	return (ret);
+	ft_memcpy(v->data + v->used, data, size);
+	v->used += size;
+	return (1);
 }
