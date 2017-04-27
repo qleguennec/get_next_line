@@ -6,13 +6,11 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 13:49:49 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/04/26 16:47:46 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/04/27 17:10:49 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt_client.h"
-
-#define CMD(cmd, buf, n) (n == sizeof(cmd) - 1 && ft_memcmp(cmd, buf, n) == 0)
 
 static void
 	update_camera
@@ -47,33 +45,50 @@ static void
 }
 
 void
+	process_command
+	(char *cmdbuf
+	, t_vect *data
+	, t_cl *cl)
+{
+	if (ft_strcmp("cam", cmdbuf) == 0)
+		update_camera(data, cl);
+	if (ft_strcmp("lgts", cmdbuf) == 0)
+	{
+		printf("lgts\n");
+		update_buffer(data, &cl->lgts, data->used / sizeof(t_cl_lgt), cl);
+		cl->n_lgts = data->used / sizeof(t_cl_lgt);
+	}
+	if (ft_strcmp("objs", cmdbuf) == 0)
+	{
+		printf("objs\n");
+		update_buffer(data, &cl->objs, data->used / sizeof(t_cl_obj), cl);
+		cl->n_objs = data->used / sizeof(t_cl_obj);
+	}
+	if (ft_strcmp("render", cmdbuf) == 0)
+		cl_main_krl_exec(cl);
+}
+
+void
 	client_loop
 	(int sockfd
 	, t_vect *data
 	, t_cl *cl)
 {
 	char	cmdbuf[10];
-	int		nbytes;
+	int		ret;
+	size_t	data_size;
 
-	if ((nbytes = recv(sockfd, cmdbuf, sizeof(cmdbuf), 0)) <= 0)
+	if ((ret = recv(sockfd, cmdbuf, sizeof(cmdbuf), 0)) <= 0)
 		return ;
+	cmdbuf[ret] = '\0';
 	data->used = 0;
-	vect_req(data, nbytes);
-	recv(sockfd, data->data, data->used, 0);
-	if (CMD("cam", cmdbuf, nbytes))
-		update_camera(data, cl);
-	if (CMD("lgts", cmdbuf, nbytes))
+	if ((ret = recv(sockfd, &data_size, 8, 0)) <= 0)
+		return ;
+	if (data_size)
 	{
-		update_buffer(data, &cl->lgts, nbytes / sizeof(t_cl_lgt), cl);
-		cl->n_lgts = nbytes / sizeof(t_cl_lgt);
-		printf("%d\n", cl->n_lgts);
+		vect_req(data, data_size);
+		recv(sockfd, data->data, data_size, 0);
 	}
-	if (CMD("objs", cmdbuf, nbytes))
-	{
-		update_buffer(data, &cl->objs, nbytes / sizeof(t_cl_obj), cl);
-		cl->n_objs = nbytes / sizeof(t_cl_obj);
-	}
-	if (CMD("render", cmdbuf, nbytes))
-		cl_main_krl_exec(cl);
+	process_command(cmdbuf, data, cl);
 	client_loop(sockfd, data, cl);
 }

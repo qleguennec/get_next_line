@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 12:07:51 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/04/26 13:48:31 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/04/27 17:13:29 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ bool
 	int				ret;
 	static size_t	work_size[2] = {REND_W, REND_H};
 
+	printf("exec\n");
 	cpy_kernel_args(cl);
 	if ((ret = cl_krl_exec(&cl->info, cl->main_krl.krl, 2, work_size))
 		!= CL_SUCCESS)
