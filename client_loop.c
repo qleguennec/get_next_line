@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 13:49:49 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/04/28 15:18:12 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/04/28 16:29:09 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,18 +67,22 @@ void
 		printf("objs\n");
 		update_buffer(data, &cl->objs, data->used / sizeof(t_cl_obj), cl);
 		cl->n_objs = data->used / sizeof(t_cl_obj);
+		printf("a %d\n", cl->n_objs);
 	}
 	if (cmd == 'r')
 	{
 		printf("render\n");
 		cl_main_krl_exec(cl);
+		data->used = 0;
 		vect_req(data, 4 * REND_W * REND_H);
 		cl_read(&cl->info, cl->main_krl.args[0]
 			, cl->main_krl.sizes[0], data->data);
 		data->used = cl->main_krl.sizes[0];
+		printf("sending %lu bytes\n", data->used);
 		send(sockfd, data->data, data->used, 0);
+		printf("sent\n");
 	}
-	send(sockfd, &cmd, 1);
+	send(sockfd, &cmd, 1, 0);
 }
 
 void
@@ -96,10 +100,12 @@ void
 	data->used = 0;
 	if ((ret = recv(sockfd, &data_size, 8, 0)) <= 0)
 		return ;
+	printf("cmd %c | %lu\n", cmd, data_size);
 	if (data_size)
 	{
 		vect_req(data, data_size);
 		recv(sockfd, data->data, data_size, 0);
+		data->used = data_size;
 	}
 	process_command(cmd, data, cl, sockfd);
 	client_loop(sockfd, data, cl);

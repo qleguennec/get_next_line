@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 12:07:51 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/04/28 12:17:18 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/04/28 16:13:48 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ bool
 	static size_t	work_size[2] = {REND_W, REND_H};
 
 	printf("exec\n");
+	printf("nobjs: %d\n", cl->n_objs);
+	printf("nlgts: %d\n", cl->n_lgts);
 	cpy_kernel_args(cl);
 	if ((ret = cl_krl_exec(&cl->info, cl->main_krl.krl, 2, work_size))
 		!= CL_SUCCESS)
