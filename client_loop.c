@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 13:49:49 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/04/27 17:10:49 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/04/28 15:18:12 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,26 +46,39 @@ static void
 
 void
 	process_command
-	(char *cmdbuf
+	(char cmd
 	, t_vect *data
-	, t_cl *cl)
+	, t_cl *cl
+	, int sockfd)
 {
-	if (ft_strcmp("cam", cmdbuf) == 0)
+	if (cmd == 'c')
+	{
+		printf("camera\n");
 		update_camera(data, cl);
-	if (ft_strcmp("lgts", cmdbuf) == 0)
+	}
+	if (cmd == 'l')
 	{
 		printf("lgts\n");
 		update_buffer(data, &cl->lgts, data->used / sizeof(t_cl_lgt), cl);
 		cl->n_lgts = data->used / sizeof(t_cl_lgt);
 	}
-	if (ft_strcmp("objs", cmdbuf) == 0)
+	if (cmd == 'o')
 	{
 		printf("objs\n");
 		update_buffer(data, &cl->objs, data->used / sizeof(t_cl_obj), cl);
 		cl->n_objs = data->used / sizeof(t_cl_obj);
 	}
-	if (ft_strcmp("render", cmdbuf) == 0)
+	if (cmd == 'r')
+	{
+		printf("render\n");
 		cl_main_krl_exec(cl);
+		vect_req(data, 4 * REND_W * REND_H);
+		cl_read(&cl->info, cl->main_krl.args[0]
+			, cl->main_krl.sizes[0], data->data);
+		data->used = cl->main_krl.sizes[0];
+		send(sockfd, data->data, data->used, 0);
+	}
+	send(sockfd, &cmd, 1);
 }
 
 void
@@ -74,13 +87,12 @@ void
 	, t_vect *data
 	, t_cl *cl)
 {
-	char	cmdbuf[10];
+	char	cmd;
 	int		ret;
 	size_t	data_size;
 
-	if ((ret = recv(sockfd, cmdbuf, sizeof(cmdbuf), 0)) <= 0)
+	if ((ret = recv(sockfd, &cmd, 1, 0)) != 1)
 		return ;
-	cmdbuf[ret] = '\0';
 	data->used = 0;
 	if ((ret = recv(sockfd, &data_size, 8, 0)) <= 0)
 		return ;
@@ -89,6 +101,6 @@ void
 		vect_req(data, data_size);
 		recv(sockfd, data->data, data_size, 0);
 	}
-	process_command(cmdbuf, data, cl);
+	process_command(cmd, data, cl, sockfd);
 	client_loop(sockfd, data, cl);
 }
