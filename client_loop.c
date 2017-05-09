@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 13:49:49 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/04/28 16:29:09 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/05/09 14:57:23 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,43 +44,37 @@ static void
 		ERR("cl_write error %a", 0, ret);
 }
 
-void
+static void
 	process_command
 	(char cmd
 	, t_vect *data
 	, t_cl *cl
 	, int sockfd)
 {
+	int	ret;
 	if (cmd == 'c')
 	{
-		printf("camera\n");
 		update_camera(data, cl);
 	}
 	if (cmd == 'l')
 	{
-		printf("lgts\n");
 		update_buffer(data, &cl->lgts, data->used / sizeof(t_cl_lgt), cl);
 		cl->n_lgts = data->used / sizeof(t_cl_lgt);
 	}
 	if (cmd == 'o')
 	{
-		printf("objs\n");
 		update_buffer(data, &cl->objs, data->used / sizeof(t_cl_obj), cl);
 		cl->n_objs = data->used / sizeof(t_cl_obj);
-		printf("a %d\n", cl->n_objs);
 	}
 	if (cmd == 'r')
 	{
-		printf("render\n");
 		cl_main_krl_exec(cl);
 		data->used = 0;
 		vect_req(data, 4 * REND_W * REND_H);
 		cl_read(&cl->info, cl->main_krl.args[0]
 			, cl->main_krl.sizes[0], data->data);
 		data->used = cl->main_krl.sizes[0];
-		printf("sending %lu bytes\n", data->used);
-		send(sockfd, data->data, data->used, 0);
-		printf("sent\n");
+		ret = send(sockfd, data->data, data->used, 0);
 	}
 	send(sockfd, &cmd, 1, 0);
 }
@@ -100,7 +94,6 @@ void
 	data->used = 0;
 	if ((ret = recv(sockfd, &data_size, 8, 0)) <= 0)
 		return ;
-	printf("cmd %c | %lu\n", cmd, data_size);
 	if (data_size)
 	{
 		vect_req(data, data_size);
