@@ -1,7 +1,7 @@
 #! /bin/bash
 
 if [ -z "$BRANCH" ]; then
-	BRANCH="lgatibel"
+	BRANCH="master"
 fi
 
 if [ -z "$PORT" ]; then
