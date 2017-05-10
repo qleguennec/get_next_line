@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 12:07:51 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/05/09 14:57:30 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/05/10 12:45:53 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static void
 	CL_KRL_ARG(cl->main_krl.krl, 3, cl->lgts);
 	CL_KRL_ARG(cl->main_krl.krl, 4, cl->n_objs);
 	CL_KRL_ARG(cl->main_krl.krl, 5, cl->n_lgts);
+	CL_KRL_ARG(cl->main_krl.krl, 6, cl->offs);
 }
 
 bool

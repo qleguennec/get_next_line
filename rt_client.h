@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 12:10:27 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/04/26 15:31:26 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/05/10 11:57:18 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct		s_cl
 	cl_mem			lgts;
 	short			n_objs;
 	short			n_lgts;
+	cl_float2		offs;
 }					t_cl;
 
 void				client_loop(int sockfd , t_vect *data , t_cl *cl); 

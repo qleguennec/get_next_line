@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 13:49:49 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/05/09 14:57:23 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/05/10 13:11:34 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,8 @@ static void
 	, t_cl *cl
 	, int sockfd)
 {
-	int	ret;
 	if (cmd == 'c')
-	{
 		update_camera(data, cl);
-	}
 	if (cmd == 'l')
 	{
 		update_buffer(data, &cl->lgts, data->used / sizeof(t_cl_lgt), cl);
@@ -74,7 +71,13 @@ static void
 		cl_read(&cl->info, cl->main_krl.args[0]
 			, cl->main_krl.sizes[0], data->data);
 		data->used = cl->main_krl.sizes[0];
-		ret = send(sockfd, data->data, data->used, 0);
+		send(sockfd, data->data, data->used, 0);
+	}
+	if (cmd == 's')
+	{
+		printf("%lu\n", data->used);
+		ft_memcpy(&cl->offs, data->data, data->used);
+		printf("offs: %f %f\n", cl->offs.x, cl->offs.y);
 	}
 	send(sockfd, &cmd, 1, 0);
 }

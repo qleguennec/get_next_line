@@ -1,7 +1,7 @@
 #! /bin/bash
 
 if [ -z "$BRANCH" ]; then
-	BRANCH="master"
+	BRANCH="qle-guen"
 fi
 
 if [ -z "$PORT" ]; then
