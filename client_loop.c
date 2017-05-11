@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 13:49:49 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/05/10 13:11:34 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/05/11 14:00:29 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,7 @@ static void
 		send(sockfd, data->data, data->used, 0);
 	}
 	if (cmd == 's')
-	{
-		printf("%lu\n", data->used);
 		ft_memcpy(&cl->offs, data->data, data->used);
-		printf("offs: %f %f\n", cl->offs.x, cl->offs.y);
-	}
 	send(sockfd, &cmd, 1, 0);
 }
 
