@@ -1,7 +1,7 @@
 #! /bin/bash
 
 if [ -z "$BRANCH" ]; then
-	BRANCH="qle-guen"
+	BRANCH="rework_light"
 fi
 
 if [ -z "$PORT" ]; then
